@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC4A233E-BE8A-47CC-A87C-8352BFD557B7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TemplateProject.Tests</RootNamespace>
+    <AssemblyName>TemplateProject.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\Packages\Autofac.2.5.2.830\lib\NET40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="AutofacContrib.CommonServiceLocator">
+      <HintPath>..\..\Packages\AutofacContrib-2.5.2.830-NET40\Library\AutofacContrib.CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />
+    <Reference Include="Gallio">
+      <HintPath>..\..\Packages\Gallio\Gallio.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit">
+      <HintPath>..\..\Packages\Gallio\MbUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib.TestHelper">
+      <HintPath>..\..\Packages\MVCContrib.release\MvcContrib.TestHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\ReferencedAssemblies\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\ReferencedAssemblies\RhinoMocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.Domain">
+      <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.NHibernate">
+      <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.Testing">
+      <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.Testing.NUnit">
+      <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Testing.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpArch.Tests">
+      <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Tests.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\Packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.DLL</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\CategoryTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\AutomappingConfigurationTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\AutoPersistenceModelGeneratorTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\Conventions\CustomForeignKeyConventionTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\Conventions\HasManyConventionTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\Conventions\PrimaryKeyConventionTest.cs" />
+    <Compile Include="Infrastructure\NHibernateMaps\Conventions\TableNameConventionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocatorInitializer.cs" />
+    <Compile Include="Tasks\CategoryTasksTest.cs" />
+    <Compile Include="Tasks\ProductTasksTest.cs" />
+    <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
+    <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />
+    <Compile Include="Web.Mvc\Controllers\HomeControllerTests.cs" />
+    <Compile Include="Web.Mvc\Controllers\RouteRegistrarTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">
+      <Project>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</Project>
+      <Name>TemplateProject.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TemplateProject.Infrastructure\TemplateProject.Infrastructure.csproj">
+      <Project>{9544D94B-9B6E-4B61-8A09-88382205BF86}</Project>
+      <Name>TemplateProject.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TemplateProject.Tasks\TemplateProject.Tasks.csproj">
+      <Project>{C9AAC14B-E695-4508-83B7-ACB8FC5A7284}</Project>
+      <Name>TemplateProject.Tasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TemplateProject.Web.Mvc\TemplateProject.Web.Mvc.csproj">
+      <Project>{6F92992D-8D75-4BA8-87C3-146581235054}</Project>
+      <Name>TemplateProject.Web.Mvc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
