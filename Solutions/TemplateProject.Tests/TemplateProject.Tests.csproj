@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\CategoryTest.cs" />
+    <Compile Include="Domain\ProductTest.cs" />
     <Compile Include="Infrastructure\NHibernateMaps\AutomappingConfigurationTest.cs" />
     <Compile Include="Infrastructure\NHibernateMaps\AutoPersistenceModelGeneratorTest.cs" />
     <Compile Include="Infrastructure\NHibernateMaps\Conventions\CustomForeignKeyConventionTest.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="ServiceLocatorInitializer.cs" />
     <Compile Include="Tasks\CategoryTasksTest.cs" />
     <Compile Include="Tasks\ProductTasksTest.cs" />
+    <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
     <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
     <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />
     <Compile Include="Web.Mvc\Controllers\HomeControllerTests.cs" />
@@ -123,6 +125,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

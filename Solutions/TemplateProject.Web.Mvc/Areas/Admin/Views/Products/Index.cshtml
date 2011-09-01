@@ -1,0 +1,16 @@
+﻿@model IList<Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<ul>
+@foreach (var product in Model)
+{
+    <li>@product.Id - @product.Name - @(Html.ActionLink<ProductsController>(x => x.Details(product.Id), "details"))</li>
+}
+</ul>
+@(Html.ActionLink<ProductsController>(x => x.Create(), "Create New Product"))

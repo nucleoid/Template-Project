@@ -6,5 +6,8 @@ namespace TemplateProject.Domain.Contracts.Tasks
     {
         IList<Product> GetAll();
         Product Get(int productId);
+        Product CreateOrUpdate(Product product);
+        void Delete(int id);
+        void Delete(Product product);
     }
 }

@@ -7,5 +7,8 @@ namespace TemplateProject.Domain.Contracts.Tasks
     {
         IList<Category> GetAll();
         Category Get(int productId);
+        Category CreateOrUpdate(Category category);
+        void Delete(int id);
+        void Delete(Category category);
     }
 }

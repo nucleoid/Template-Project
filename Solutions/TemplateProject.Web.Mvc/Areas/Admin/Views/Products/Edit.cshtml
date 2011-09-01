@@ -1,0 +1,19 @@
+﻿@model Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "Products"))
+{
+    <text>
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Id", Model.Id)<br />
+    Name: @Html.TextBox("Name", Model.Name)<br />
+    <input type="submit" value = "Save Product" />
+    </text>
+}
+@(Html.ActionLink<ProductsController>(x => x.Delete(Model.Id), "Delete This Product"))

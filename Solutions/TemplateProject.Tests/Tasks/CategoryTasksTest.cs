@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -50,6 +51,53 @@ namespace TemplateProject.Tests.Tasks
 
             //Assert
             Assert.AreEqual(Id, gotten.Id);
+            _repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void CreateOrUpdate_Sets_Modified_And_Saves()
+        {
+            //Arrange
+            var category = new Category();
+            _repository.Expect(x => x.SaveOrUpdate(category));
+
+            //Act
+            var updated = _tasks.CreateOrUpdate(category);
+
+            //Assert
+            var now = DateTime.Now;
+            Assert.AreEqual(now.Date, updated.Modified.Date);
+            _repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Delete_Id_Deletes_Category()
+        {
+            //Arrange
+            const int Id = 4;
+            var category = new Category();
+            category.SetIdTo(Id);
+            _repository.Expect(x => x.Get(Id)).Return(category);
+            _repository.Expect(x => x.Delete(category));
+
+            //Act
+            _tasks.Delete(Id);
+
+            //Assert
+            _repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Delete_Entity_Deletes_Category()
+        {
+            //Arrange
+            var category = new Category();
+            _repository.Expect(x => x.Delete(category));
+
+            //Act
+            _tasks.Delete(category);
+
+            //Assert
             _repository.VerifyAllExpectations();
         }
     }

@@ -1,0 +1,16 @@
+﻿@model Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+<ul>
+<li>ID: @Model.Id</li>
+<li>Created: @Model.Created.ToShortDateString()</li>
+<li>Modified: @Model.Modified.ToShortDateString()</li>
+<li>Name: @Model.Name</li>
+<li>Category: @(Model.Category != null ? Model.Category.Name : "N/A")</li>
+</ul>
+@(Html.ActionLink<ProductsController>(x => x.Edit(Model.Id), "Edit"))

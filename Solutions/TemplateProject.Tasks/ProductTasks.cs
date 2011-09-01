@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
@@ -25,6 +23,24 @@ namespace TemplateProject.Tasks
         public Product Get(int productId)
         {
             return _productRepository.Get(productId);
+        }
+
+        public Product CreateOrUpdate(Product product)
+        {
+            product.Modified = DateTime.Now;
+            _productRepository.SaveOrUpdate(product);
+            return product;
+        }
+
+        public void Delete(int id)
+        {
+            var product = _productRepository.Get(id);
+            _productRepository.Delete(product);
+        }
+
+        public void Delete(Product product)
+        {
+            _productRepository.Delete(product);
         }
     }
 }

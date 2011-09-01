@@ -23,7 +23,7 @@ namespace TemplateProject.Tests.Web.Mvc.Controllers
             var result = _controller.Index() as ViewResult;
 
             //Assert
-            Assert.IsNull(result.View);
+            Assert.AreEqual(string.Empty, result.ViewName);
         }
     }
 }

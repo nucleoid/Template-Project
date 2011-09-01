@@ -4,6 +4,7 @@ using Autofac;
 using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
+using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Tasks;
 
 namespace TemplateProject.Web.Mvc.Autofac
@@ -21,7 +22,7 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddTasksTo(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ProductTasks)));
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ProductTasks))).AsImplementedInterfaces();
         }
 
         private static void AddCustomRepositoriesTo(ContainerBuilder builder)

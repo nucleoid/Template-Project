@@ -23,6 +23,7 @@ namespace TemplateProject.Infrastructure
                 .ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.ConnectionDriver, "NHibernate.Driver.SqlClientDriver"))
                 .ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.ShowSql, "true"))
                 .ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.ReleaseConnections, "auto"))
+                .ExposeConfiguration(c => c.SetProperty(NHibernate.Cfg.Environment.Hbm2ddlAuto, "create"))
                 .ProxyFactoryFactory<NHibernate.ByteCode.Castle.ProxyFactoryFactory>()
                 .BuildConfiguration();
 
