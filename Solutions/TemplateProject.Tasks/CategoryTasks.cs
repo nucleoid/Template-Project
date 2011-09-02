@@ -27,6 +27,8 @@ namespace TemplateProject.Tasks
 
         public Category CreateOrUpdate(Category category)
         {
+            if(category.Id == 0)
+                category.Created = DateTime.Now;
             category.Modified = DateTime.Now;
             _categoryRepository.SaveOrUpdate(category);
             return category;

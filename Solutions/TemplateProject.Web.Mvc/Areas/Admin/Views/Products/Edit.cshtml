@@ -11,8 +11,10 @@
 {
     <text>
     @Html.AntiForgeryToken()
-    @Html.Hidden("Id", Model.Id)<br />
-    Name: @Html.TextBox("Name", Model.Name)<br />
+    @Html.LabelFor(x => x.Name)
+    <div>@Html.TextBoxFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)</div>
+    @Html.LabelFor(x => x.Category)
+    <div>@Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories, "Key", "Value"))  @Html.ValidationMessageFor(x => x.Category)</div>
     <input type="submit" value = "Save Product" />
     </text>
 }

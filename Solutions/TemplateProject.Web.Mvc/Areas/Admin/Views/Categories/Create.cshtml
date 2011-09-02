@@ -1,0 +1,18 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Edit", "Categories"))
+{
+    <text>
+    @Html.AntiForgeryToken()
+    @Html.LabelFor(x => x.Name)
+    <div>@Html.TextBoxFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)</div>
+    <input type="submit" value = "Create Category" />
+    </text>
+}

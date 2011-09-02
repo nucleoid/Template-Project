@@ -15,9 +15,6 @@ namespace TemplateProject.Tests.Domain
             var category = new Category();
 
             //Assert
-            var now = DateTime.Now;
-            Assert.AreEqual(now.Date, category.Created.Date);
-            Assert.AreEqual(now.Date, category.Modified.Date);
             Assert.AreEqual(0, category.Products.Count);
         }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using SharpArch.Domain.DomainModel;
 
 namespace TemplateProject.Domain
@@ -10,9 +11,6 @@ namespace TemplateProject.Domain
     {
         public Category()
         {
-            var now = DateTime.Now;
-            Created = now;
-            Modified = now;
             Products = new List<Product>();
         }
 
@@ -32,6 +30,16 @@ namespace TemplateProject.Domain
 
             product.Category = this;
             Products.Add(product);
+        }
+
+        public virtual string ProductNames
+        {
+            get
+            {
+                if (Products.Count == 0)
+                    return "N/A";
+                return String.Join(", ", Products.Select(p => p.Name));
+            }
         }
     }
 }

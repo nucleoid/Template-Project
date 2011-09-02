@@ -27,6 +27,8 @@ namespace TemplateProject.Tasks
 
         public Product CreateOrUpdate(Product product)
         {
+            if(product.Id == 0)
+                product.Created = DateTime.Now;
             product.Modified = DateTime.Now;
             _productRepository.SaveOrUpdate(product);
             return product;

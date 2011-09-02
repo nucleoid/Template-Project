@@ -7,13 +7,6 @@ namespace TemplateProject.Domain
 
     public class Product : Entity
     {
-        public Product()
-        {
-            var now = DateTime.Now;
-            Created = now;
-            Modified = now;
-        }
-
         public virtual DateTime Created { get; set; }
 
         public virtual DateTime Modified { get; set; }
@@ -21,6 +14,7 @@ namespace TemplateProject.Domain
         [Required(ErrorMessage = "Must have a name")]
         public virtual string Name { get; set; }
 
+        [Required(ErrorMessage = "Must have a category")]
         public virtual Category Category { get; set; }
 
     }

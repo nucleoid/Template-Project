@@ -1,0 +1,21 @@
+﻿@using MvcContrib.UI.Grid
+@model IList<Category>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+@Html.Grid(Model).Columns(column =>
+{
+    column.For(c => c.Id).Named("ID");
+    column.For(c => c.Name);
+    column.For(c => c.Created).Named("Created");
+    column.For(c => c.Modified).Named("Modified");
+    column.For(c => c.Products.Count == 0 ? "N/A" : String.Join(", ", c.Products.Select(p => p.Name))).Named("Products");
+    column.For(c => Html.ActionLink<CategoriesController>(x => x.Edit(c.Id), "edit")).Named(string.Empty);
+}).Empty("No Categories")
+
+@(Html.ActionLink<CategoriesController>(x => x.Create(), "Create New Category"))

@@ -1,4 +1,5 @@
-﻿@model IList<Product>
+﻿@using MvcContrib.UI.Grid
+@model IList<Product>
 
 @{
     ViewBag.Title = "Index";
@@ -7,10 +8,14 @@
 
 <h2>Index</h2>
 
-<ul>
-@foreach (var product in Model)
-{
-    <li>@product.Id - @product.Name - @(Html.ActionLink<ProductsController>(x => x.Details(product.Id), "details"))</li>
-}
-</ul>
 @(Html.ActionLink<ProductsController>(x => x.Create(), "Create New Product"))
+
+@Html.Grid(Model).Columns(column =>
+{
+    column.For(p => p.Id).Named("ID");
+    column.For(p => p.Name);
+    column.For(p => p.Created).Named("Created");
+    column.For(p => p.Modified).Named("Modified");
+    column.For(p => Html.ActionLink<CategoriesController>(x => x.Details(p.Category.Id), p.Category.Name)).Named("Category");
+    column.For(p => Html.ActionLink<ProductsController>(x => x.Edit(p.Id), "edit")).Named(string.Empty);
+}).Empty("No Products")

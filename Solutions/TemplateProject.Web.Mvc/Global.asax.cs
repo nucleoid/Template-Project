@@ -4,10 +4,13 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using AutofacContrib.CommonServiceLocator;
 using NLog;
+using TemplateProject.Domain;
+using TemplateProject.Domain.Contracts.Tasks;
+using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Web.Mvc.Attributes;
 using TemplateProject.Web.Mvc.Autofac;
+using TemplateProject.Web.Mvc.Binders;
 using TemplateProject.Web.Mvc.Controllers;
-using TemplateProject.Infrastructure.NHibernateMaps;
 using Microsoft.Practices.ServiceLocation;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Web.Mvc;
@@ -52,20 +55,12 @@ namespace TemplateProject.Web.Mvc
             ViewEngines.Engines.Add(new RazorViewEngine());
             ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
             ModelValidatorProviders.Providers.Add(new ClientDataTypeModelValidatorProvider());
-            InitializeServiceLocator();
+            InitializeAutofacDependencyResolver();
+            ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             AreaRegistration.RegisterAllAreas();
             RouteRegistrar.RegisterRoutesTo(RouteTable.Routes);
             RegisterGlobalFilters(GlobalFilters.Filters);
             LogManager.Configuration = NLogConfiguration.CreateConfig();
-        }
-
-        protected virtual void InitializeServiceLocator() 
-        {
-            ViewEngines.Engines.Clear();
-            ViewEngines.Engines.Add(new RazorViewEngine());
-            ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
-            ModelValidatorProviders.Providers.Add(new ClientDataTypeModelValidatorProvider());
-            InitializeAutofacDependencyResolver();
         }
 
         private void InitializeAutofacDependencyResolver()

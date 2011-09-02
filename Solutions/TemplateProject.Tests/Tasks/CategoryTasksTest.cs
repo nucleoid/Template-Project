@@ -55,7 +55,7 @@ namespace TemplateProject.Tests.Tasks
         }
 
         [Test]
-        public void CreateOrUpdate_Sets_Modified_And_Saves()
+        public void CreateOrUpdate_Sets_Created_And_Modified_And_Saves()
         {
             //Arrange
             var category = new Category();
@@ -67,6 +67,23 @@ namespace TemplateProject.Tests.Tasks
             //Assert
             var now = DateTime.Now;
             Assert.AreEqual(now.Date, updated.Modified.Date);
+            Assert.AreEqual(now.Date, updated.Created.Date);
+            _repository.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void CreateOrUpdate_Does_Not_Set_Created_With_Existing_And_Saves()
+        {
+            //Arrange
+            var category = new Category();
+            category.SetIdTo(2);
+            _repository.Expect(x => x.SaveOrUpdate(category));
+
+            //Act
+            var updated = _tasks.CreateOrUpdate(category);
+
+            //Assert
+            Assert.AreEqual(DateTime.MinValue, updated.Created.Date);
             _repository.VerifyAllExpectations();
         }
 

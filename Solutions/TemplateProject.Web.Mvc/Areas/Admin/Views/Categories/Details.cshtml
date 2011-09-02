@@ -1,0 +1,21 @@
+﻿@model Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<ul>
+<li>ID: @Model.Id</li>
+<li>Created: @Model.Created)</li>
+<li>Modified: @Model.Modified)</li>
+<li>Name: @Model.Name</li>
+<li>Products: @if(Model.Products.Count == 0){ <text>N/A</text> }
+              @foreach (var product in Model.Products.Select((x, i) => new { Data = x, Index = i}))
+              {
+                  @(product.Index < Model.Products.Count - 1 ? product.Data.Name+", " : product.Data.Name)
+              }</li>
+</ul>
+@(Html.ActionLink<ProductsController>(x => x.Edit(Model.Id), "Edit"))
