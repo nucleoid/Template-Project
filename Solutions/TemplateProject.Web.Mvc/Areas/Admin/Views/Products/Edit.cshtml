@@ -1,4 +1,5 @@
-﻿@model Product
+﻿@using TemplateProject.Web.Mvc.Areas.Admin.Models
+@model ProductEditViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -11,11 +12,11 @@
 {
     <text>
     @Html.AntiForgeryToken()
-    @Html.LabelFor(x => x.Name)
-    <div>@Html.TextBoxFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)</div>
-    @Html.LabelFor(x => x.Category)
-    <div>@Html.DropDownListFor(x => x.Category, new SelectList(ViewBag.Categories, "Key", "Value"))  @Html.ValidationMessageFor(x => x.Category)</div>
+    @Html.LabelFor(x => x.Product.Name)
+    <div>@Html.TextBoxFor(x => x.Product.Name) @Html.ValidationMessageFor(x => x.Product.Name)</div>
+    @Html.LabelFor(x => x.Product.Category)
+    <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"))  </div>
     <input type="submit" value = "Save Product" />
     </text>
 }
-@(Html.ActionLink<ProductsController>(x => x.Delete(Model.Id), "Delete This Product"))
+@(Html.ActionLink<ProductsController>(x => x.Delete(Model.Product.Id), "Delete This Product"))

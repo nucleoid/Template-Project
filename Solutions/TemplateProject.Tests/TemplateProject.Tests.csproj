@@ -48,6 +48,7 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="MvcContrib, Version=3.0.51.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="MvcContrib.TestHelper">
       <HintPath>..\..\Packages\MVCContrib.release\MvcContrib.TestHelper.dll</HintPath>
     </Reference>
@@ -97,6 +98,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocatorInitializer.cs" />
     <Compile Include="Tasks\CategoryTasksTest.cs" />
+    <Compile Include="Tasks\Commands\MassCategoryChangeCommandTest.cs" />
+    <Compile Include="Tasks\Commands\MassCategoryChangeHandlerTest.cs" />
     <Compile Include="Tasks\ProductTasksTest.cs" />
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\CategoriesControllerTest.cs" />
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="Web.Mvc\Controllers\HomeControllerTests.cs" />
     <Compile Include="Web.Mvc\Controllers\RouteRegistrarTest.cs" />
     <Compile Include="Web.Mvc\Extensions\IntegerExtensionsTest.cs" />
-    <Compile Include="Web.Mvc\ProductBinderTest.cs" />
+    <Compile Include="Web.Mvc\Binders\ProductBinderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">

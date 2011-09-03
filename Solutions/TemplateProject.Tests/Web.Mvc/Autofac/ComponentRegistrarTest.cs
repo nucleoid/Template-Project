@@ -6,6 +6,7 @@ using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
+using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Web.Mvc.Autofac;
 
 namespace TemplateProject.Tests.Web.Mvc.Autofac
@@ -26,7 +27,7 @@ namespace TemplateProject.Tests.Web.Mvc.Autofac
             //Assert
             Assert.IsNotNull(container.Resolve<IProductTasks>());
             Assert.IsNotNull(container.Resolve<ICategoryTasks>());
-//            Assert.IsNotNull(container.Resolve(typeof(IQuery<>))); //none yet
+            Assert.IsNotNull(container.Resolve(typeof(IProductsQuery)));
             Assert.IsNotNull(container.Resolve<IEntityDuplicateChecker>());
             Assert.IsNotNull(container.Resolve(typeof(INHibernateRepository<Product>)));
 //            Assert.IsNotNull(container.Resolve(typeof(INHibernateRepositoryWithTypedId<,>))); //none yet

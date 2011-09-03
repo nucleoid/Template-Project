@@ -5,6 +5,7 @@ using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Domain.Contracts.Tasks;
+using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
 
 namespace TemplateProject.Web.Mvc.Autofac
@@ -43,7 +44,8 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddQueryObjectsTo(ContainerBuilder builder)
         {
-            //none yet
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ProductsQuery))).AssignableTo<NHibernateQuery>().
+                AsImplementedInterfaces();
         }
 
         private static void AddCommandsTo(ContainerBuilder builder)

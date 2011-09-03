@@ -9,6 +9,7 @@ namespace TemplateProject.Web.Mvc.Binders
 {
     public class ProductBinder : SharpModelBinder
     {
+        private const string CategoryIdPropertyName = "SelectedCategoryId";
         private const string FullCategoryIdPropertyName = "Product.Category";
         private readonly ICategoryTasks _categoryTasks;
 
@@ -22,7 +23,7 @@ namespace TemplateProject.Web.Mvc.Binders
             var model = base.BindModel(controllerContext, bindingContext) as Product;
             if(model != null)
             {
-                var id = bindingContext.ValueProvider.GetValue(FullCategoryIdPropertyName);
+                var id = bindingContext.ValueProvider.GetValue(CategoryIdPropertyName);
                 int parsedId;
                 if(id != null && Int32.TryParse(id.AttemptedValue, out parsedId))
                 {

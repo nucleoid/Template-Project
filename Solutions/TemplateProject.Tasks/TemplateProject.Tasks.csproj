@@ -87,6 +87,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CategoryTasks.cs" />
+    <Compile Include="CommandHandlers\MassCategoryChangeHandler.cs" />
+    <Compile Include="Commands\MassCategoryChangeCommand.cs" />
+    <Compile Include="Commands\MassCategoryChangeResult.cs" />
     <Compile Include="ProductTasks.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,10 +119,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CommandHandlers\" />
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

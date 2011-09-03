@@ -1,5 +1,6 @@
-﻿@using MvcContrib.UI.Grid
-@model IList<Product>
+﻿@using MvcContrib.Pagination
+@using MvcContrib.UI.Grid
+@model IPagination<Product>
 
 @{
     ViewBag.Title = "Index";
@@ -10,12 +11,52 @@
 
 @(Html.ActionLink<ProductsController>(x => x.Create(), "Create New Product"))
 
-@Html.Grid(Model).Columns(column =>
+<div id="products">
+@using (Html.  BeginForm("ChangeCategory", "Products"))
 {
-    column.For(p => p.Id).Named("ID");
-    column.For(p => p.Name);
-    column.For(p => p.Created).Named("Created");
-    column.For(p => p.Modified).Named("Modified");
-    column.For(p => Html.ActionLink<CategoriesController>(x => x.Details(p.Category.Id), p.Category.Name)).Named("Category");
-    column.For(p => Html.ActionLink<ProductsController>(x => x.Edit(p.Id), "edit")).Named(string.Empty);
-}).Empty("No Products")
+    <text>
+    @Html.Grid(Model).Columns(column =>
+    {
+        column.For(p => p.Id).Named("ID");
+        column.For(p => p.Name);
+        column.For(p => p.Created).Named("Created");
+        column.For(p => p.Modified).Named("Modified");
+        column.For(p => Html.ActionLink<CategoriesController>(x => x.Details(p.Category.Id), p.Category.Name)).Named("Category");
+        column.For(p => Html.ActionLink<ProductsController>(x => x.Edit(p.Id), "edit")).Named(string.Empty);
+        column.For(p => Html.CheckBox(p.Id.ToString(), false));
+    }).Empty("No Products")
+
+    
+    @Html.Label("category", "Category")
+    <div>@Html.DropDownList("category", new SelectList(ViewBag.Categories, "Key", "Value"))
+    <input type="submit" value = "Change Category for Selected Products" /></div>
+    <div id="change-category-success"></div>
+    </text>
+}
+</div>
+<div>
+@if (Model.HasPreviousPage)
+{
+    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.PageNumber - 1), "Previous"))</text>
+}
+
+@if (Model.HasNextPage)
+{
+    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.PageNumber + 1), "Next"))</text>
+}
+</div>
+
+<div>
+Page @Model.PageNumber of @Model.TotalPages
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+  $('#products form').live('submit', function () {
+    $.post($(this).attr('action'), $(this).serialize(), function (data) {
+      $("#change-category-success").html($(data));
+    });
+    return false;
+  });
+});
+</script>
