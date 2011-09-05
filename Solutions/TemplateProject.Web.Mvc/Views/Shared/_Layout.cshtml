@@ -24,7 +24,7 @@
                     </p>
                     <h2>TemplateProject Pages</h2>
                     <ul>
-                        <li>@(Html.ActionLink<HomeController>(c => c.Index(), "Home"))</li>
+                        <li>@(Html.ActionLink("Home", "Index", "Home", new { area = string.Empty }, null))</li>
                         <li>@(Html.ActionLink("Admin Categories", "Index", "Categories", new { area = "Admin" }, null))</li>
                         <li>@(Html.ActionLink("Admin Products", "Index", "Products", new { area = "Admin" }, null))</li>
                     </ul>

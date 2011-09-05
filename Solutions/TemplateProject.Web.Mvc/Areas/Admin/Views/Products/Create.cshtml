@@ -17,7 +17,7 @@
     @Html.LabelFor(x => x.Product.Name)
     <div>@Html.TextBoxFor(x => x.Product.Name) @Html.ValidationMessageFor(x => x.Product.Name)</div>
     @Html.LabelFor(x => x.Product.Category)
-    <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"))  </div>
+    <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"), "Select a Category")  @Html.ValidationMessageFor(x => x.SelectedCategoryId)</div>
     <input type="submit" value = "Create Product" />
     </text>
 }

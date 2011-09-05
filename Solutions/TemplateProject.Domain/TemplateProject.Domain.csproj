@@ -63,6 +63,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvcContrib">
+      <HintPath>..\..\Packages\MVCContrib.release\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="SharpArch.Domain">
       <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Domain.dll</HintPath>
     </Reference>
@@ -82,6 +85,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Category.cs" />
+    <Compile Include="Contracts\Queries\IProductsQuery.cs" />
     <Compile Include="Contracts\Tasks\ICategoryTasks.cs" />
     <Compile Include="Contracts\Tasks\IProductTasks.cs" />
     <Compile Include="Product.cs" />
@@ -103,9 +107,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contracts\Queries\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

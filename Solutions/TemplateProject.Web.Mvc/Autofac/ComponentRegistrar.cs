@@ -1,12 +1,13 @@
 ﻿
 using System.Reflection;
 using Autofac;
+using SharpArch.Domain.Commands;
 using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
-using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
+using TemplateProject.Tasks.CommandHandlers;
 
 namespace TemplateProject.Web.Mvc.Autofac
 {
@@ -23,7 +24,7 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddTasksTo(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ProductTasks))).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(ProductTasks))).Where(x => x.Name.EndsWith("Tasks")).AsImplementedInterfaces();
         }
 
         private static void AddCustomRepositoriesTo(ContainerBuilder builder)
@@ -38,7 +39,7 @@ namespace TemplateProject.Web.Mvc.Autofac
             builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(INHibernateRepository<>));
             builder.RegisterGeneric(typeof(NHibernateRepositoryWithTypedId<,>)).As(typeof(INHibernateRepositoryWithTypedId<,>));
             builder.RegisterType<DefaultSessionFactoryKeyProvider>().As<ISessionFactoryKeyProvider>();
-            builder.RegisterType<SharpArch.Domain.Commands.CommandProcessor>().As<SharpArch.Domain.Commands.ICommandProcessor>();
+            builder.RegisterType<CommandProcessor>().As<ICommandProcessor>();
 
         }
 
@@ -50,7 +51,8 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddCommandsTo(ContainerBuilder builder)
         {
-            //none yet
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(MassCategoryChangeHandler))).InNamespaceOf<MassCategoryChangeHandler>() 
+                .AsImplementedInterfaces();
         }
     }
 }

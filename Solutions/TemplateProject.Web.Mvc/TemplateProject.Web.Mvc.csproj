@@ -159,6 +159,7 @@
     <Compile Include="Attributes\HandleErrorAttribute.cs" />
     <Compile Include="Autofac\ComponentRegistrar.cs" />
     <Compile Include="Binders\ProductBinder.cs" />
+    <Compile Include="Binders\ProductEditViewModelBinder.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RouteRegistrar.cs" />

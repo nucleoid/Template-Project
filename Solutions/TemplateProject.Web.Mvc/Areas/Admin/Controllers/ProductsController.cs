@@ -88,12 +88,16 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             return View(model);
         }
 
+        [Transaction]
         public ActionResult Delete(int id)
         {
             _productTasks.Delete(id);
             return this.RedirectToAction(x => x.Index(null));
         }
 
+        //Ajax action
+        [Transaction]
+        [HttpPost]
         public ActionResult ChangeCategory(FormCollection collection)
         {
             var catId = Int32.Parse(collection["category"]);

@@ -14,7 +14,8 @@
     column.For(c => c.Name);
     column.For(c => c.Created).Named("Created");
     column.For(c => c.Modified).Named("Modified");
-    column.For(c => c.Products.Count == 0 ? "N/A" : String.Join(", ", c.Products.Select(p => p.Name))).Named("Products");
+    column.For(c => c.Products.Count == 0 ? "N/A" : 
+        String.Join(", ", c.Products.Select(p => Html.ActionLink<ProductsController>(x => x.Edit(p.Id), p.Name)))).Named("Products").Encode(false);
     column.For(c => Html.ActionLink<CategoriesController>(x => x.Edit(c.Id), "edit")).Named(string.Empty);
 }).Empty("No Categories")
 

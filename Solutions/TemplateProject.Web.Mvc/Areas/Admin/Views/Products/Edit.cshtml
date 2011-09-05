@@ -12,6 +12,7 @@
 {
     <text>
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Product.Id)
     @Html.LabelFor(x => x.Product.Name)
     <div>@Html.TextBoxFor(x => x.Product.Name) @Html.ValidationMessageFor(x => x.Product.Name)</div>
     @Html.LabelFor(x => x.Product.Category)

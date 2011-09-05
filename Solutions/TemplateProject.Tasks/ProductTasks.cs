@@ -10,9 +10,9 @@ namespace TemplateProject.Tasks
     {
         private readonly INHibernateRepository<Product> _productRepository;
 
-        public ProductTasks(INHibernateRepository<Product> categoryRepository)
+        public ProductTasks(INHibernateRepository<Product> productRepository)
         {
-            _productRepository = categoryRepository;
+            _productRepository = productRepository;
         }
 
         public IList<Product> GetAll()

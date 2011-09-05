@@ -54,6 +54,7 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             return View(category);
         }
 
+        [Transaction]
         public ActionResult Delete(int id)
         {
             _tasks.Delete(id);

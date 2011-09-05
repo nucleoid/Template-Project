@@ -125,7 +125,6 @@
     <Compile Include="NHibernateConfig\Conventions\TableNameConvention.cs" />
     <Compile Include="NHibernateConfig\Maps\ProductMap.cs" />
     <Compile Include="NLogConfiguration.cs" />
-    <Compile Include="Queries\IProductsQuery.cs" />
     <Compile Include="Queries\ProductsQuery.cs" />
   </ItemGroup>
   <ItemGroup>

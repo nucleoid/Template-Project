@@ -54,7 +54,7 @@ Page @Model.PageNumber of @Model.TotalPages
 $(document).ready(function () {
   $('#products form').live('submit', function () {
     $.post($(this).attr('action'), $(this).serialize(), function (data) {
-      $("#change-category-success").html($(data));
+      $("#change-category-success").html(data);
     });
     return false;
   });
