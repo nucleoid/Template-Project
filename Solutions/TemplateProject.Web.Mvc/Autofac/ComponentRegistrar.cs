@@ -40,7 +40,6 @@ namespace TemplateProject.Web.Mvc.Autofac
             builder.RegisterGeneric(typeof(NHibernateRepositoryWithTypedId<,>)).As(typeof(INHibernateRepositoryWithTypedId<,>));
             builder.RegisterType<DefaultSessionFactoryKeyProvider>().As<ISessionFactoryKeyProvider>();
             builder.RegisterType<CommandProcessor>().As<ICommandProcessor>();
-
         }
 
         private static void AddQueryObjectsTo(ContainerBuilder builder)
@@ -51,7 +50,7 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddCommandsTo(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(MassCategoryChangeHandler))).InNamespaceOf<MassCategoryChangeHandler>() 
+            builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(MassCategoryChangeHandler))).InNamespaceOf<MassCategoryChangeHandler>()
                 .AsImplementedInterfaces();
         }
     }

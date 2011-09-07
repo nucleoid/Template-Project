@@ -2,11 +2,16 @@
 using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac.Integration.Web;
 using AutofacContrib.CommonServiceLocator;
 using NLog;
+using Quartz;
+using Quartz.Impl;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.NHibernateConfig;
+using TemplateProject.Infrastructure.Quartz;
+using TemplateProject.Infrastructure.Quartz.Jobs;
 using TemplateProject.Web.Mvc.Areas.Admin.Models;
 using TemplateProject.Web.Mvc.Attributes;
 using TemplateProject.Web.Mvc.Autofac;
@@ -14,7 +19,6 @@ using TemplateProject.Web.Mvc.Binders;
 using TemplateProject.Web.Mvc.Controllers;
 using Microsoft.Practices.ServiceLocation;
 using SharpArch.NHibernate;
-using SharpArch.NHibernate.Web.Mvc;
 using SharpArch.Web.Mvc.ModelBinder;
 using System.Configuration;
 using Autofac;
@@ -25,13 +29,14 @@ namespace TemplateProject.Web.Mvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private WebSessionStorage webSessionStorage;
+        private ThreadAndWebSessionStorage threadAndWebSessionStorage;
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static IScheduler scheduler;
 
         public override void Init()
         {
             base.Init();
-            webSessionStorage = new WebSessionStorage(this);
+            threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
         }
 
         protected void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -78,13 +83,33 @@ namespace TemplateProject.Web.Mvc
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
+            InitialiseJobScheduler(container);
         }
 
         private void InitialiseNHibernateSessions()
         {
             var config = new NHibernateConfiguration(ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
-            NHibernateSession.Init(webSessionStorage, new[] { Server.MapPath("~/bin/TemplateProject.Infrastructure.dll") },
+            NHibernateSession.Init(threadAndWebSessionStorage, new[] { Server.MapPath("~/bin/TemplateProject.Infrastructure.dll") },
                 new AutoPersistenceModelGenerator().Generate(), null, null, null, config);
+        }
+
+        protected void InitialiseJobScheduler(IContainer container)
+        {
+            ISchedulerFactory factory = new StdSchedulerFactory();
+            scheduler = factory.GetScheduler();
+            scheduler.JobFactory = new AutofacJobFactory(new ContainerProvider(container), ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
+            scheduler.Start();
+
+            var trigger = TriggerUtils.MakeImmediateTrigger(3, TimeSpan.FromSeconds(5));
+            trigger.Name = @"Job Trigger";
+            scheduler.ScheduleJob(new JobDetail("Job", null, typeof(OddJob)), trigger);
+
+            EndRequest += ShutdownQuartz;
+        }
+
+        private static void ShutdownQuartz(object sender, EventArgs e)
+        {
+            scheduler.Shutdown(false);
         }
     }
 }

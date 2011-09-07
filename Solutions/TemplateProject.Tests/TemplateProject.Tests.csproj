@@ -75,6 +75,7 @@
     </Reference>
     <Reference Include="SharpArch.Web.Mvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\Packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.DLL</HintPath>
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\CategoryTest.cs" />
+    <Compile Include="Domain\Validation\ModelClientNameValidationRuleTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\AutomappingConfigurationTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\AutoPersistenceModelGeneratorTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\Conventions\CustomForeignKeyConventionTest.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Tasks\ProductTasksTest.cs" />
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\CategoriesControllerTest.cs" />
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
+    <Compile Include="Domain\Validation\Attributes\NameValidationAttributeTest.cs" />
     <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
     <Compile Include="Web.Mvc\Binders\ProductEditViewModelBinderTest.cs" />
     <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />

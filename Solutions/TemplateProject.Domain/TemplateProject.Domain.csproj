@@ -75,6 +75,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -84,11 +85,13 @@
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Validation\Attributes\NameValidationAttribute.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Contracts\Queries\IProductsQuery.cs" />
     <Compile Include="Contracts\Tasks\ICategoryTasks.cs" />
     <Compile Include="Contracts\Tasks\IProductTasks.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="Validation\ModelClientNameValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

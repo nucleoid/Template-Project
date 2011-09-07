@@ -53,6 +53,9 @@
     <Reference Include="Autofac.Integration.Mvc">
       <HintPath>..\..\Packages\Autofac.Mvc3.2.5.2.830\lib\NET40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.Web">
+      <HintPath>..\..\Packages\AutofacContrib-2.5.2.830-NET40\Library\Autofac.Integration.Web.dll</HintPath>
+    </Reference>
     <Reference Include="AutofacContrib.CommonServiceLocator">
       <HintPath>..\..\Packages\AutofacContrib-2.5.2.830-NET40\Library\AutofacContrib.CommonServiceLocator.dll</HintPath>
     </Reference>
@@ -93,6 +96,9 @@
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\Packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\..\Packages\Quartz.1.0.3\lib\3.5\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="SharpArch.Domain">
       <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Domain.dll</HintPath>
@@ -173,6 +179,7 @@
     <Content Include="Content\img\sharp_arch_small.gif" />
     <Content Include="Content\js\jquery-1.6.1.min.js" />
     <Content Include="Content\js\modernizr-1.7.min.js" />
+    <Content Include="Content\js\NameValidation.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\js\jquery-1.6.1-vsdoc.js" />

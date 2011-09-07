@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TemplateProject.Domain.Validation.Attributes;
 
 namespace TemplateProject.Domain
 {
@@ -12,6 +13,7 @@ namespace TemplateProject.Domain
         public virtual DateTime Modified { get; set; }
 
         [Required(ErrorMessage = "Must have a name")]
+        [NameValidation]
         public virtual string Name { get; set; }
 
         [Required(ErrorMessage = "Must have a category")]
