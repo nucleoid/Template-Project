@@ -114,6 +114,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -134,7 +135,6 @@
     <Compile Include="NHibernateConfig\Conventions\TableNameConvention.cs" />
     <Compile Include="NHibernateConfig\Maps\ProductMap.cs" />
     <Compile Include="NHibernateConfig\ThreadAndWebSessionStorage.cs" />
-    <Compile Include="NHibernateConfig\ThreadStorageProperty.cs" />
     <Compile Include="NLogConfiguration.cs" />
     <Compile Include="Quartz\AutofacJobFactory.cs" />
     <Compile Include="Quartz\Jobs\OddJob.cs" />

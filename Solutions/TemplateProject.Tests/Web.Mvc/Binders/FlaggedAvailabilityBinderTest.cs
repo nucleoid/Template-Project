@@ -1,42 +1,38 @@
-﻿
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using TemplateProject.Domain;
-using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Web.Mvc.Areas.Admin.Controllers;
 using TemplateProject.Web.Mvc.Binders;
 
-namespace TemplateProject.Tests.Web.Mvc
+namespace TemplateProject.Tests.Web.Mvc.Binders
 {
     [TestFixture]
-    public class ProductBinderTest
+    public class FlaggedAvailabilityBinderTest
     {
-        private ICategoryTasks _categoryTasks;
-        private ProductBinder _binder;
+        private FlaggedAvailabilityBinder _binder;
 
         [SetUp]
         public void Setup()
         {
-            _categoryTasks = MockRepository.GenerateMock<ICategoryTasks>();
-            _binder = new ProductBinder(_categoryTasks);
+            _binder = new FlaggedAvailabilityBinder();
         }
 
         [Test]
-        public void BindModel_With_No_Base_Binding()
+        public void BindModel_With_No_MultipleAvailability_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection();
+            var formCollection = new NameValueCollection { { "Product.Name", "sploosh" } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
-            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(FlaggedAvailability));
 
             var bindingContext = new ModelBindingContext
             {
-                ModelName = "Product",
+                ModelName = "FlaggedAvailability",
                 ValueProvider = valueProvider,
                 ModelMetadata = modelMetadata
             };
@@ -52,17 +48,17 @@ namespace TemplateProject.Tests.Web.Mvc
         }
 
         [Test]
-        public void BindModel_With_No_Category_ID()
+        public void BindModel_With_Empty_MultipleAvailability_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection { {"Product.Name", "Sploosh"} };
+            var formCollection = new NameValueCollection { { "Product.Name", "sploosh" }, { "Product.MultipleAvailability", string.Empty } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
-            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(FlaggedAvailability));
 
             var bindingContext = new ModelBindingContext
             {
-                ModelName = "Product",
+                ModelName = "FlaggedAvailability",
                 ValueProvider = valueProvider,
                 ModelMetadata = modelMetadata
             };
@@ -71,26 +67,24 @@ namespace TemplateProject.Tests.Web.Mvc
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
 
             // Act
-            var result = _binder.BindModel(controllerContext, bindingContext) as Product;
+            var result = _binder.BindModel(controllerContext, bindingContext);
 
             // Assert
-            Assert.IsNull(result.Category);
-            Assert.AreEqual("Sploosh", result.Name);
-            Assert.IsFalse(bindingContext.ModelState.IsValid);
+            Assert.IsNull(result);
         }
 
         [Test]
-        public void BindModel_With_Bad_Category_ID()
+        public void BindModel_With_Bad_MultipleAvailability_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection { { "Product.Name", "Sploosh" }, { "SelectedCategoryId", "a" } };
+            var formCollection = new NameValueCollection { { "Product.Name", "sploosh" }, { "Product.MultipleAvailability", "a" } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
-            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(FlaggedAvailability));
 
             var bindingContext = new ModelBindingContext
             {
-                ModelName = "Product",
+                ModelName = "FlaggedAvailability",
                 ValueProvider = valueProvider,
                 ModelMetadata = modelMetadata
             };
@@ -99,58 +93,24 @@ namespace TemplateProject.Tests.Web.Mvc
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
 
             // Act
-            var result = _binder.BindModel(controllerContext, bindingContext) as Product;
+            var result = _binder.BindModel(controllerContext, bindingContext);
 
             // Assert
-            Assert.IsNull(result.Category);
-            Assert.IsFalse(bindingContext.ModelState.IsValid);
-        }
-
-        [Test]
-        public void BindModel_With_Category_ID()
-        {
-            // Arrange
-            var formCollection = new NameValueCollection { { "Product.Name", "Sploosh" }, { "SelectedCategoryId", "2" } };
-
-            var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
-            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
-
-            var bindingContext = new ModelBindingContext
-            {
-                ModelName = "Product",
-                ValueProvider = valueProvider,
-                ModelMetadata = modelMetadata
-            };
-
-            var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
-            _categoryTasks.Expect(x => x.Get(2)).Return(new Category {Name = "Bones"});
-
-            // Act
-            var result = _binder.BindModel(controllerContext, bindingContext) as Product;
-
-            // Assert
-            Assert.AreEqual("Bones", result.Category.Name);
-            Assert.IsTrue(bindingContext.ModelState.IsValid);
-            _categoryTasks.VerifyAllExpectations();
+            Assert.IsNull(result);
         }
 
         [Test]
         public void BindModel_With_MultipleAvailability_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection 
-            {
-                { "Product.Name", "Sploosh" }, 
-                { "Product.MultipleAvailability", string.Format("{0},{1}",FlaggedAvailability.Store.ToString(), FlaggedAvailability.ThirdParty.ToString()) }
-            };
+            var formCollection = new NameValueCollection { { "Product.Name", "sploosh" }, { "Product.MultipleAvailability", FlaggedAvailability.Store.ToString() } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
-            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(FlaggedAvailability));
 
             var bindingContext = new ModelBindingContext
             {
-                ModelName = "Product",
+                ModelName = "FlaggedAvailability",
                 ValueProvider = valueProvider,
                 ModelMetadata = modelMetadata
             };
@@ -159,10 +119,40 @@ namespace TemplateProject.Tests.Web.Mvc
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
 
             // Act
-            var result = _binder.BindModel(controllerContext, bindingContext) as Product;
+            var result = _binder.BindModel(controllerContext, bindingContext);
 
             // Assert
-            Assert.AreEqual(FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result.MultipleAvailability);
+            Assert.AreEqual(FlaggedAvailability.Store, result);
+        }
+
+        [Test]
+        public void BindModel_With_Multiple_MultipleAvailability()
+        {
+            // Arrange
+            var formCollection = new NameValueCollection
+            {
+                { "Product.Name", "sploosh" }, 
+                { "Product.MultipleAvailability", string.Format("{0},{1}",FlaggedAvailability.Store.ToString(), FlaggedAvailability.ThirdParty.ToString()) }
+            };
+
+            var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(FlaggedAvailability));
+
+            var bindingContext = new ModelBindingContext
+            {
+                ModelName = "FlaggedAvailability",
+                ValueProvider = valueProvider,
+                ModelMetadata = modelMetadata
+            };
+
+            var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+
+            // Act
+            var result = _binder.BindModel(controllerContext, bindingContext);
+
+            // Assert
+            Assert.AreEqual(FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result);
         }
     }
 }

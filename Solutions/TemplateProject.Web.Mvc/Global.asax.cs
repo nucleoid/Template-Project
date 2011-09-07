@@ -60,7 +60,6 @@ namespace TemplateProject.Web.Mvc
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
-//            ModelValidatorProviders.Providers.Add(new ClientDataTypeModelValidatorProvider());
             InitializeAutofacDependencyResolver();
             ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             ModelBinders.Binders.Add(typeof(ProductEditViewModel), new ProductEditViewModelBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
@@ -88,6 +87,7 @@ namespace TemplateProject.Web.Mvc
 
         private void InitialiseNHibernateSessions()
         {
+            threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
             var config = new NHibernateConfiguration(ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
             NHibernateSession.Init(threadAndWebSessionStorage, new[] { Server.MapPath("~/bin/TemplateProject.Infrastructure.dll") },
                 new AutoPersistenceModelGenerator().Generate(), null, null, null, config);
@@ -95,21 +95,15 @@ namespace TemplateProject.Web.Mvc
 
         protected void InitialiseJobScheduler(IContainer container)
         {
+            NHibernateInitializer.Instance().InitializeNHibernateOnce(InitialiseNHibernateSessions);
             ISchedulerFactory factory = new StdSchedulerFactory();
             scheduler = factory.GetScheduler();
-            scheduler.JobFactory = new AutofacJobFactory(new ContainerProvider(container), ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
+            scheduler.JobFactory = new AutofacJobFactory(new ContainerProvider(container));
             scheduler.Start();
 
-            var trigger = TriggerUtils.MakeImmediateTrigger(3, TimeSpan.FromSeconds(5));
+            var trigger = TriggerUtils.MakeSecondlyTrigger(5, 10);
             trigger.Name = @"Job Trigger";
             scheduler.ScheduleJob(new JobDetail("Job", null, typeof(OddJob)), trigger);
-
-            EndRequest += ShutdownQuartz;
-        }
-
-        private static void ShutdownQuartz(object sender, EventArgs e)
-        {
-            scheduler.Shutdown(false);
         }
     }
 }

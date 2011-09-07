@@ -7,10 +7,14 @@ using SharpArch.NHibernate;
 
 namespace TemplateProject.Infrastructure.NHibernateConfig
 {
+    /// <summary>
+    /// Storage solution to allow request based storage for regular web requests, 
+    /// and thread storage for things like quartz jobs that don't have an httpcontext
+    /// </summary>
     public class ThreadAndWebSessionStorage : ISessionStorage
     {
         private const string HttpContextSessionStorageKey = "HttpContextSessionStorageKey";
-        private const string ThreadContextSessionStorageKey = "ThreadContextSessionStorageKey";
+        public static LocalDataStoreSlot Slot = Thread.AllocateNamedDataSlot("ThreadContextSessionStorageKey");
 
         public ThreadAndWebSessionStorage(HttpApplication app)
         {
@@ -20,18 +24,18 @@ namespace TemplateProject.Infrastructure.NHibernateConfig
 
         public IEnumerable<ISession> GetAllSessions()
         {
-            return GetSimpleSessionStorage().GetAllSessions();
+            return GetSessionStorage().GetAllSessions();
         }
 
         public ISession GetSessionForKey(string factoryKey)
         {
-            var storage = GetSimpleSessionStorage();
+            var storage = GetSessionStorage();
             return storage.GetSessionForKey(factoryKey);
         }
 
         public void SetSessionForKey(string factoryKey, ISession session)
         {
-            var storage = GetSimpleSessionStorage();
+            var storage = GetSessionStorage();
             storage.SetSessionForKey(factoryKey, session);
         }
 
@@ -46,7 +50,7 @@ namespace TemplateProject.Infrastructure.NHibernateConfig
             HttpContext.Current.Items.Remove(HttpContextSessionStorageKey);
         }
 
-        private static SimpleSessionStorage GetSimpleSessionStorage()
+        private static ISessionStorage GetSessionStorage()
         {
             HttpContext current = HttpContext.Current;
 
@@ -63,15 +67,15 @@ namespace TemplateProject.Infrastructure.NHibernateConfig
             return GetStorageForThread();
         }
 
-        private static SimpleSessionStorage GetStorageForThread()
+        private static ISessionStorage GetStorageForThread()
         {
-            var simpleSessionStorage = Thread.CurrentContext.GetProperty(ThreadContextSessionStorageKey) as ThreadStorageProperty;
+            var simpleSessionStorage = Thread.GetData(Slot) as SimpleSessionStorage;
             if (simpleSessionStorage == null)
             {
-                simpleSessionStorage = new ThreadStorageProperty(new SimpleSessionStorage());
-                Thread.CurrentContext.SetProperty(simpleSessionStorage);
+                simpleSessionStorage = new SimpleSessionStorage();
+                Thread.SetData(Slot, simpleSessionStorage);
             }
-            return simpleSessionStorage.SessionStorage;
+            return simpleSessionStorage;
         }
     }
 }

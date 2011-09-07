@@ -1,4 +1,5 @@
 ﻿@using TemplateProject.Web.Mvc.Areas.Admin.Models
+@using TemplateProject.Web.Mvc.Extensions
 @model ProductEditViewModel
 
 @{
@@ -15,6 +16,17 @@
     @Html.HiddenFor(x => x.Product.Id)
     @Html.LabelFor(x => x.Product.Name)
     <div>@Html.TextBoxFor(x => x.Product.Name) @Html.ValidationMessageFor(x => x.Product.Name)</div>
+
+    @Html.LabelFor(x => x.Product.DefaultAvailability)
+    <div>@Availability.Online.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.Online)
+    @Availability.Store.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.Store)
+    @Availability.ThirdParty.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.ThirdParty)  @Html.ValidationMessageFor(x => x.Product.DefaultAvailability)</div>
+
+    @Html.LabelFor(x => x.Product.MultipleAvailability)
+    <div>@FlaggedAvailability.Online.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.Online) == FlaggedAvailability.Online, FlaggedAvailability.Online)
+    @FlaggedAvailability.Store.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.Store) == FlaggedAvailability.Store, FlaggedAvailability.Store)
+    @FlaggedAvailability.ThirdParty.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.ThirdParty) == FlaggedAvailability.ThirdParty, FlaggedAvailability.ThirdParty) @Html.ValidationMessageFor(x => x.Product.MultipleAvailability)</div>
+
     @Html.LabelFor(x => x.Product.Category)
     <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"))  </div>
     <input type="submit" value = "Save Product" />

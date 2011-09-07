@@ -30,7 +30,7 @@ namespace TemplateProject.Tests.Web.Mvc.Binders
         public void BindModel_With_Category_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection { { "ProductEditViewModel.Product.Id", "2" }, { "ProductEditViewModel.Product.Name", "sploosh" }, { "SelectedCategoryId", "2" } };
+            var formCollection = new NameValueCollection { { "ProductEditViewModel.Product.Id", "2" }, { "ProductEditViewModel.Product.Name", "Sploosh" }, { "SelectedCategoryId", "2" } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
             var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(ProductEditViewModel));
@@ -51,9 +51,42 @@ namespace TemplateProject.Tests.Web.Mvc.Binders
 
             // Assert
             Assert.AreEqual(2, result.Product.Id);
-            Assert.AreEqual("sploosh", result.Product.Name);
+            Assert.AreEqual("Sploosh", result.Product.Name);
             Assert.AreEqual("Bones", result.Product.Category.Name);
             Assert.IsTrue(bindingContext.ModelState.IsValid);
+        }
+
+        //TODO Mitch figure out why the heck this works in unit tests, but not otherwise
+        [Test]
+        public void BindModel_With_MultipleAvailability_ID()
+        {
+            // Arrange
+            var formCollection = new NameValueCollection 
+            {
+                { "ProductEditViewModel.Product.Name", "Sploosh" }, 
+                { "SelectedCategoryId", "2" },
+                { "ProductEditViewModel.Product.MultipleAvailability", string.Format("{0},{1}",FlaggedAvailability.Store.ToString(), FlaggedAvailability.ThirdParty.ToString()) }
+            };
+
+            var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(ProductEditViewModel));
+
+            var bindingContext = new ModelBindingContext
+            {
+                ModelName = "ProductEditViewModel",
+                ValueProvider = valueProvider,
+                ModelMetadata = modelMetadata
+            };
+
+            var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            _categoryTasks.Expect(x => x.Get(2)).Return(new Category { Name = "Bones" });
+
+            // Act
+            var result = _binder.BindModel(controllerContext, bindingContext) as ProductEditViewModel;
+
+            // Assert
+            Assert.AreEqual(FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result.Product.MultipleAvailability);
         }
     }
 }

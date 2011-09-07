@@ -85,6 +85,8 @@
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Availability.cs" />
+    <Compile Include="FlaggedAvailability.cs" />
     <Compile Include="Validation\Attributes\NameValidationAttribute.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Contracts\Queries\IProductsQuery.cs" />

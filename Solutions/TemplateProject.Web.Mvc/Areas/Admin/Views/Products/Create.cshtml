@@ -1,4 +1,5 @@
 ﻿@using TemplateProject.Web.Mvc.Areas.Admin.Models
+@using TemplateProject.Web.Mvc.Extensions
 @model ProductEditViewModel
 
 @{
@@ -16,6 +17,17 @@
     @Html.AntiForgeryToken()
     @Html.LabelFor(x => x.Product.Name)
     <div>@Html.TextBoxFor(x => x.Product.Name) @Html.ValidationMessageFor(x => x.Product.Name)</div>
+
+    @Html.LabelFor(x => x.Product.DefaultAvailability)
+    <div>@Availability.Online.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.Online)
+    @Availability.Store.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.Store)
+    @Availability.ThirdParty.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.ThirdParty)  @Html.ValidationMessageFor(x => x.Product.DefaultAvailability)</div>
+
+    @Html.LabelFor(x => x.Product.MultipleAvailability)
+    <div>@FlaggedAvailability.Online.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.Online)
+    @FlaggedAvailability.Store.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.Store)
+    @FlaggedAvailability.ThirdParty.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.ThirdParty)</div>
+
     @Html.LabelFor(x => x.Product.Category)
     <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"), "Select a Category")  @Html.ValidationMessageFor(x => x.SelectedCategoryId)</div>
     <input type="submit" value = "Create Product" />

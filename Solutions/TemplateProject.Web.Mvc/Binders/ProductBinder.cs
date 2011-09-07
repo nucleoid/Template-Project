@@ -21,22 +21,22 @@ namespace TemplateProject.Web.Mvc.Binders
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             var model = base.BindModel(controllerContext, bindingContext) as Product;
-            BindCategory(bindingContext, model);
+            if (model != null)
+            {
+                BindCategory(bindingContext, model);
+            }
             return model;
         }
 
         public void BindCategory(ModelBindingContext bindingContext, Product model)
         {
-            if (model != null)
+            var id = bindingContext.ValueProvider.GetValue(CategoryIdPropertyName);
+            int parsedId;
+            if (id != null && Int32.TryParse(id.AttemptedValue, out parsedId))
             {
-                var id = bindingContext.ValueProvider.GetValue(CategoryIdPropertyName);
-                int parsedId;
-                if (id != null && Int32.TryParse(id.AttemptedValue, out parsedId))
-                {
-                    model.Category = _categoryTasks.Get(parsedId);
-                    bindingContext.ModelState[FullCategoryIdPropertyName] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, 
-                        CultureInfo.CurrentCulture)};
-                }
+                model.Category = _categoryTasks.Get(parsedId);
+                bindingContext.ModelState[FullCategoryIdPropertyName] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, 
+                    CultureInfo.CurrentCulture)};
             }
         }
     }

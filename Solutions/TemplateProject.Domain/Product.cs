@@ -19,5 +19,8 @@ namespace TemplateProject.Domain
         [Required(ErrorMessage = "Must have a category")]
         public virtual Category Category { get; set; }
 
+        public virtual Availability DefaultAvailability { get; set; }
+
+        public virtual FlaggedAvailability? MultipleAvailability { get; set; }
     }
 }
