@@ -9,6 +9,7 @@ namespace TemplateProject.Tests.Domain.Validation.Attributes
     public class NameValidationAttributeTest
     {
         [Test]
+        [Row(null, true)]
         [Row("", true)]
         [Row("High", true)]
         [Row("High School", true)]

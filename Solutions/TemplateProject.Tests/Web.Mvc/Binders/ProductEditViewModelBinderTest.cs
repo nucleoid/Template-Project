@@ -56,7 +56,6 @@ namespace TemplateProject.Tests.Web.Mvc.Binders
             Assert.IsTrue(bindingContext.ModelState.IsValid);
         }
 
-        //TODO Mitch figure out why the heck this works in unit tests, but not otherwise
         [Test]
         public void BindModel_With_MultipleAvailability_ID()
         {
@@ -73,7 +72,7 @@ namespace TemplateProject.Tests.Web.Mvc.Binders
 
             var bindingContext = new ModelBindingContext
             {
-                ModelName = "ProductEditViewModel",
+                ModelName = "productEditViewModel",
                 ValueProvider = valueProvider,
                 ModelMetadata = modelMetadata
             };

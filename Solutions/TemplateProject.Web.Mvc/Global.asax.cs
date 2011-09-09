@@ -9,6 +9,7 @@ using Quartz;
 using Quartz.Impl;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
+using TemplateProject.Infrastructure.FluentMigrations;
 using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Infrastructure.Quartz;
 using TemplateProject.Infrastructure.Quartz.Jobs;
@@ -29,14 +30,15 @@ namespace TemplateProject.Web.Mvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private ThreadAndWebSessionStorage threadAndWebSessionStorage;
+        private ThreadAndWebSessionStorage _threadAndWebSessionStorage;
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private static IScheduler scheduler;
+        private string _connectionString;
 
         public override void Init()
         {
             base.Init();
-            threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
+            _threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
         }
 
         protected void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -46,7 +48,7 @@ namespace TemplateProject.Web.Mvc
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            NHibernateInitializer.Instance().InitializeNHibernateOnce(InitialiseNHibernateSessions);
+            NHibernateInitializer.Instance().InitializeNHibernateOnce(InitializeNHibernateSessions);
         }
 
         protected void Application_Error(object sender, EventArgs e) 
@@ -57,6 +59,7 @@ namespace TemplateProject.Web.Mvc
 
         protected void Application_Start()
         {
+            _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
@@ -82,20 +85,12 @@ namespace TemplateProject.Web.Mvc
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
-            InitialiseJobScheduler(container);
+            InitializeJobScheduler(container);
         }
 
-        private void InitialiseNHibernateSessions()
+        private void InitializeJobScheduler(IContainer container)
         {
-            threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
-            var config = new NHibernateConfiguration(ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
-            NHibernateSession.Init(threadAndWebSessionStorage, new[] { Server.MapPath("~/bin/TemplateProject.Infrastructure.dll") },
-                new AutoPersistenceModelGenerator().Generate(), null, null, null, config);
-        }
-
-        protected void InitialiseJobScheduler(IContainer container)
-        {
-            NHibernateInitializer.Instance().InitializeNHibernateOnce(InitialiseNHibernateSessions);
+            NHibernateInitializer.Instance().InitializeNHibernateOnce(InitializeNHibernateSessions);
             ISchedulerFactory factory = new StdSchedulerFactory();
             scheduler = factory.GetScheduler();
             scheduler.JobFactory = new AutofacJobFactory(new ContainerProvider(container));
@@ -104,6 +99,21 @@ namespace TemplateProject.Web.Mvc
             var trigger = TriggerUtils.MakeSecondlyTrigger(5, 10);
             trigger.Name = @"Job Trigger";
             scheduler.ScheduleJob(new JobDetail("Job", null, typeof(OddJob)), trigger);
+        }
+
+        private void InitializeNHibernateSessions()
+        {
+            MigrateDatabase();
+            _threadAndWebSessionStorage = new ThreadAndWebSessionStorage(this);
+            var config = new NHibernateConfiguration(_connectionString);
+            NHibernateSession.Init(_threadAndWebSessionStorage, new[] { Server.MapPath("~/bin/TemplateProject.Infrastructure.dll") },
+                new AutoPersistenceModelGenerator().Generate(), null, null, null, config);
+        }
+
+        private void MigrateDatabase()
+        {
+            var runner = new Runner(_connectionString, typeof(Runner).Assembly);
+            runner.Run();
         }
     }
 }

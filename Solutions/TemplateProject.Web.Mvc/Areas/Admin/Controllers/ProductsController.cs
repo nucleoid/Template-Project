@@ -68,22 +68,22 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         [Transaction]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Edit(ProductEditViewModel productModel)
+        public ActionResult Edit(ProductEditViewModel productEditViewModel)
         {
-            if (ModelState.IsValid && productModel.Product.IsValid())
+            if (ModelState.IsValid && productEditViewModel.Product.IsValid())
             {
-                _productTasks.CreateOrUpdate(productModel.Product);
+                _productTasks.CreateOrUpdate(productEditViewModel.Product);
                 return this.RedirectToAction(x => x.Index(null));
             }
 
             var model = new ProductEditViewModel
             {
                 Categories = _categoryTasks.GetAll(),
-                Product = productModel.Product,
-                SelectedCategoryId = productModel.Product.Category.Id
+                Product = productEditViewModel.Product,
+                SelectedCategoryId = productEditViewModel.Product.Category.Id
             };
 
-            if (productModel.Product.Id == 0)
+            if (productEditViewModel.Product.Id == 0)
                 return View("Create", model);
             return View(model);
         }

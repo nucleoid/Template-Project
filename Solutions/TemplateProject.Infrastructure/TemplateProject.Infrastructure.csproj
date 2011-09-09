@@ -75,6 +75,12 @@
     <Reference Include="Common.Logging">
       <HintPath>..\..\Packages\Common.Logging.1.2.0\lib\1.0\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="FluentMigrator">
+      <HintPath>..\..\Packages\FluentMigrator.1.0.1.0\lib\40\FluentMigrator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner">
+      <HintPath>..\..\Packages\FluentMigrator.Runner\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\..\Packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
     </Reference>
@@ -125,6 +131,9 @@
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FluentMigrations\Migrations\Migration_0001.cs" />
+    <Compile Include="FluentMigrations\Runner.cs" />
+    <Compile Include="FluentMigrations\MigrationSafe.cs" />
     <Compile Include="NHibernateConfig\AutoPersistenceModelGenerator.cs" />
     <Compile Include="NHibernateConfig\NHibernateConfiguration.cs" />
     <Compile Include="NHibernateConfig\AutomappingConfiguration.cs" />
@@ -136,6 +145,7 @@
     <Compile Include="NHibernateConfig\Maps\ProductMap.cs" />
     <Compile Include="NHibernateConfig\ThreadAndWebSessionStorage.cs" />
     <Compile Include="NLogConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quartz\AutofacJobFactory.cs" />
     <Compile Include="Quartz\Jobs\OddJob.cs" />
     <Compile Include="Queries\ProductsQuery.cs" />
@@ -167,7 +177,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

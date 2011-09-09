@@ -7,6 +7,7 @@ using Quartz.Spi;
 using Rhino.Mocks;
 using TemplateProject.Infrastructure.Quartz;
 using TemplateProject.Infrastructure.Quartz.Jobs;
+using TemplateProject.Web.Mvc.Autofac;
 
 namespace TemplateProject.Tests.Infrastructure.Quartz
 {
@@ -17,21 +18,19 @@ namespace TemplateProject.Tests.Infrastructure.Quartz
         public void NewJob_Injects_Properties()
         {
             //Arrange
-            var containerProvider = MockRepository.GenerateMock<IContainerProvider>();
-            var container = MockRepository.GenerateMock<IContainer>();
-            containerProvider.Expect(x => x.ApplicationContainer).Return(container);
-            container.Expect(x => x.InjectUnsetProperties(Arg<IJob>.Is.Anything));
+            var builder = new ContainerBuilder();
+            ComponentRegistrar.AddComponentsTo(builder);
+            var containerProvider = new ContainerProvider(builder.Build());
             var jobDetail = new JobDetail("blag", null, typeof (OddJob));
             var trigger = TriggerUtils.MakeImmediateTrigger(0, TimeSpan.FromSeconds(2));
             var bundle = new TriggerFiredBundle(jobDetail, trigger, null, false, null, null, null, null);
             var factory = new AutofacJobFactory(containerProvider);
 
             //Act
-            factory.NewJob(bundle);
+            var job = factory.NewJob(bundle) as OddJob;
 
             //Assert
-            containerProvider.VerifyAllExpectations();
-            container.VerifyAllExpectations();
+            Assert.IsNotNull(job.ProductTasks);
         }
     }
 }

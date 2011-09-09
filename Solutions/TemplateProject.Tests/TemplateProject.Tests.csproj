@@ -39,6 +39,8 @@
     <Reference Include="AutofacContrib.CommonServiceLocator">
       <HintPath>..\..\Packages\AutofacContrib-2.5.2.830-NET40\Library\AutofacContrib.CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="FluentMigrator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL" />
+    <Reference Include="FluentMigrator.Runner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=x86" />
     <Reference Include="FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL" />
     <Reference Include="Gallio">
       <HintPath>..\..\Packages\Gallio\Gallio.dll</HintPath>
@@ -93,6 +95,8 @@
   <ItemGroup>
     <Compile Include="Domain\CategoryTest.cs" />
     <Compile Include="Domain\Validation\ModelClientNameValidationRuleTest.cs" />
+    <Compile Include="Infrastructure\FluentMigrations\MigrationSafeTest.cs" />
+    <Compile Include="Infrastructure\FluentMigrations\RunnerTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\AutomappingConfigurationTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\AutoPersistenceModelGeneratorTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\Conventions\CustomForeignKeyConventionTest.cs" />

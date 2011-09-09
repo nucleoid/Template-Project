@@ -151,7 +151,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ControllerContext = controllerContext;
             _controller.ValueProvider = new FormCollection().ToValueProvider();
             _productTasks.Expect(x => x.CreateOrUpdate(Arg<Product>.Is.Anything)).Return(new Product());
-            var product = new Product {Name = "blah", Category = new Category()};
+            var product = new Product {Name = "Blah", Category = new Category()};
 
             //Act
             var result = _controller.Edit(new ProductEditViewModel {Product = product}) as RedirectToRouteResult;

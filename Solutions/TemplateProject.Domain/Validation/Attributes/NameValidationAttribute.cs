@@ -17,6 +17,8 @@ namespace TemplateProject.Domain.Validation.Attributes
 
         public override bool IsValid(object value)
         {
+            if (value == null)
+                return true;
             return !Regex.IsMatch(value.ToString(), CapsRegex);
         }
 

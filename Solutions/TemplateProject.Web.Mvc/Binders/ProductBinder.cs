@@ -24,8 +24,16 @@ namespace TemplateProject.Web.Mvc.Binders
             if (model != null)
             {
                 BindCategory(bindingContext, model);
+                BindMultipleAvailability(controllerContext, bindingContext, model);
             }
             return model;
+        }
+
+        public static void BindMultipleAvailability(ControllerContext controllerContext, ModelBindingContext bindingContext, Product model)
+        {
+            var multiple = new FlaggedAvailabilityBinder().BindModel(controllerContext, bindingContext);
+            if (multiple != null)
+                model.MultipleAvailability = (FlaggedAvailability) multiple;
         }
 
         public void BindCategory(ModelBindingContext bindingContext, Product model)

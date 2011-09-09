@@ -26,11 +26,13 @@
         column.For(p => Html.CheckBox(p.Id.ToString(), false));
     }).Empty("No Products")
 
-    
-    @Html.Label("category", "Category")
-    <div>@Html.DropDownList("category", new SelectList(ViewBag.Categories, "Key", "Value"))
-    <input type="submit" value = "Change Category for Selected Products" /></div>
-    <div id="change-category-success"></div>
+ @if (Model.TotalItems > 0)
+ {
+     @Html.Label("category", "Category")
+     <div>@Html.DropDownList("category", new SelectList(ViewBag.Categories, "Key", "Value"))
+         <input type="submit" value = "Change Category for Selected Products" /></div>
+     <div id="change-category-success"></div>
+ }
     </text>
 }
 </div>
