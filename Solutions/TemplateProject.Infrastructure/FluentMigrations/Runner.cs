@@ -59,12 +59,12 @@ namespace TemplateProject.Infrastructure.FluentMigrations
             }
         }
 
-        public virtual IMigrationProcessor GenerateProcessor(SqlConnection connection)
+        internal virtual IMigrationProcessor GenerateProcessor(SqlConnection connection)
         {
             return new SqlServerProcessor(connection, MigrationGenerator, Announcer, Options);
         }
 
-        public virtual IMigrationRunner GenerateRunner(IRunnerContext context, IMigrationProcessor processor)
+        internal virtual IMigrationRunner GenerateRunner(IRunnerContext context, IMigrationProcessor processor)
         {
             return new MigrationRunner(_assembly, context, processor);
         }

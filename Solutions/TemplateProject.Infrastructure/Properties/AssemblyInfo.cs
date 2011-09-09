@@ -8,5 +8,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription("TemplateProject.Infrastructure")]
 
 [assembly: InternalsVisibleTo("TemplateProject.Tests")]
-[assembly: InternalsVisibleTo("TemplateProject.Tests.Infrastructure")]
-[assembly: InternalsVisibleTo("TemplateProject.Tests.Infrastructure.FluentMigrations")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

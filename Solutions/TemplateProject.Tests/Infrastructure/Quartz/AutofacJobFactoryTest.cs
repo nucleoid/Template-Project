@@ -4,7 +4,6 @@ using Autofac.Integration.Web;
 using MbUnit.Framework;
 using Quartz;
 using Quartz.Spi;
-using Rhino.Mocks;
 using TemplateProject.Infrastructure.Quartz;
 using TemplateProject.Infrastructure.Quartz.Jobs;
 using TemplateProject.Web.Mvc.Autofac;
