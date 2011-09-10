@@ -12,9 +12,7 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
         public void CheckBoxWithValue_Without_Name()
         {
             //Arrange
-            var container = MockRepository.GenerateStub<IViewDataContainer>();
-            var viewContext = MockRepository.GenerateStub<ViewContext>();
-            var helper = new HtmlHelper(viewContext, container);
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
 
             //Act
             helper.CheckBoxWithValue(null, false, null, null);
@@ -25,9 +23,7 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
         public void CheckBoxWithValue_With_Name()
         {
             //Arrange
-            var container = MockRepository.GenerateStub<IViewDataContainer>();
-            var viewContext = MockRepository.GenerateStub<ViewContext>();
-            var helper = new HtmlHelper(viewContext, container);
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
 
             //Act
             var checkBox = helper.CheckBoxWithValue("print", 3);
@@ -40,9 +36,7 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
         public void CheckBoxWithValue_With_Name_And_Checked()
         {
             //Arrange
-            var container = MockRepository.GenerateStub<IViewDataContainer>();
-            var viewContext = MockRepository.GenerateStub<ViewContext>();
-            var helper = new HtmlHelper(viewContext, container);
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
 
             //Act
             var checkBox = helper.CheckBoxWithValue("print", true, 3);
@@ -54,9 +48,7 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
         public void CheckBoxWithValue_With_Name_And_Checked_And_HtmlAttributes()
         {
             //Arrange
-            var container = MockRepository.GenerateStub<IViewDataContainer>();
-            var viewContext = MockRepository.GenerateStub<ViewContext>();
-            var helper = new HtmlHelper(viewContext, container);
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
 
             //Act
             var checkBox = helper.CheckBoxWithValue("print", true, 3, new { awesomize = "yes", @class = "linkage" });
@@ -64,6 +56,40 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
             //Assert
             Assert.AreEqual("<input awesomize=\"yes\" checked=\"checked\" class=\"linkage\" id=\"print\" name=\"print\" type=\"checkbox\" value=\"3\" />",
                 checkBox.ToString());
+        }
+
+        [Test]
+        public void ActionLinkArea_Routes_To_Area()
+        {
+            //Arrange
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
+
+            //Act
+            var linkage = helper.ActionLinkArea<TestController>(c => c.Tester(), "test link", "SecretArea");
+
+            //Assert
+            Assert.AreEqual("<a href=\"/SecretArea/Test/Tester\">test link</a>", linkage.ToString());
+        }
+
+        [Test]
+        public void ActionLinkArea_HtmlAttributes_Routes_To_Area()
+        {
+            //Arrange
+            HtmlHelper helper = MvcHelper.GetHtmlHelper();
+
+            //Act
+            var linkage = helper.ActionLinkArea<TestController>(c => c.Tester(), "test link", "SecretArea", new { coolness = "11" });
+
+            //Assert
+            Assert.AreEqual("<a coolness=\"11\" href=\"/SecretArea/Test/Tester\">test link</a>", linkage.ToString());
+        }
+
+        private class TestController : Controller
+        {
+            public ActionResult Tester()
+            {
+                return null;
+            }
         }
     }
 }

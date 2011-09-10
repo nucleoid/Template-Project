@@ -1,3 +1,6 @@
+@using Microsoft.Web.Helpers
+@using TemplateProject.Web.Mvc.Areas.Admin.Controllers
+@using TemplateProject.Web.Mvc.Extensions
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -21,13 +24,13 @@
             <div class="columnsContainer">
                 <div class="leftColumn">
                     <p>
-                        <img src="@Url.Content("/Content/img/sharp_arch.jpg")" />
+                        <img src="@Url.Content("/Content/img/tracks.png")" />
                     </p>
                     <h2>TemplateProject Pages</h2>
                     <ul>
-                        <li>@(Html.ActionLink("Home", "Index", "Home", new { area = string.Empty }, null))</li>
-                        <li>@(Html.ActionLink("Admin Categories", "Index", "Categories", new { area = "Admin" }, null))</li>
-                        <li>@(Html.ActionLink("Admin Products", "Index", "Products", new { area = "Admin" }, null))</li>
+                        <li>@(Html.ActionLinkArea<HomeController>(c => c.Index(), "Home", null))</li>
+                        <li>@(Html.ActionLinkArea<CategoriesController>(c => c.Index(), "Admin Categories", "Admin"))</li>
+                        <li>@(Html.ActionLinkArea<ProductsController>(c => c.Index(null), "Admin Products", "Admin"))</li>
                     </ul>
                 </div>
 

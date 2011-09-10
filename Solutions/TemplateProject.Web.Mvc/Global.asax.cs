@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac.Integration.Web;
@@ -28,7 +29,7 @@ using TemplateProject.Infrastructure;
 
 namespace TemplateProject.Web.Mvc
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         private ThreadAndWebSessionStorage _threadAndWebSessionStorage;
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -75,12 +76,8 @@ namespace TemplateProject.Web.Mvc
         private void InitializeAutofacDependencyResolver()
         {
             var builder = new ContainerBuilder();
-            ComponentRegistrar.AddComponentsTo(builder);
-
-            builder.RegisterModelBinders(Assembly.GetExecutingAssembly());
-            builder.RegisterModelBinderProvider();
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterModule(new AutofacWebTypesModule());
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            ComponentRegistrar.AddComponentsTo(builder, executingAssembly);
 
             var container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

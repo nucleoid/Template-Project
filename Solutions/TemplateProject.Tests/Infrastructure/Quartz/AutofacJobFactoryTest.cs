@@ -7,6 +7,7 @@ using Quartz.Spi;
 using TemplateProject.Infrastructure.Quartz;
 using TemplateProject.Infrastructure.Quartz.Jobs;
 using TemplateProject.Web.Mvc.Autofac;
+using TemplateProject.Web.Mvc.Controllers;
 
 namespace TemplateProject.Tests.Infrastructure.Quartz
 {
@@ -18,7 +19,8 @@ namespace TemplateProject.Tests.Infrastructure.Quartz
         {
             //Arrange
             var builder = new ContainerBuilder();
-            ComponentRegistrar.AddComponentsTo(builder);
+            var assembly = typeof(HomeController).Assembly;
+            ComponentRegistrar.AddComponentsTo(builder, assembly);
             var containerProvider = new ContainerProvider(builder.Build());
             var jobDetail = new JobDetail("blag", null, typeof (OddJob));
             var trigger = TriggerUtils.MakeImmediateTrigger(0, TimeSpan.FromSeconds(2));

@@ -78,6 +78,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Helpers">
+      <HintPath>..\..\Packages\microsoft-web-helpers.1.15\lib\Microsoft.Web.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\ASP.NET MVC\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -177,6 +180,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\flash\htf.swf" />
     <Content Include="Content\img\sharp_arch.jpg" />
     <Content Include="Content\img\sharp_arch_small.gif" />
     <Content Include="Content\js\jquery-1.6.1.min.js" />
@@ -187,6 +191,7 @@
     <Content Include="Content\js\jquery-1.6.1-vsdoc.js" />
     <Content Include="Content\js\jquery-1.6.1.js" />
     <Content Include="Content\js\modernizr-1.7.js" />
+    <Content Include="Release Notes - Microsoft.Web.Helpers.txt" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
