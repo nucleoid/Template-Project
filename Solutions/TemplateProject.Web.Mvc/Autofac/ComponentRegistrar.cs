@@ -6,6 +6,7 @@ using SharpArch.Domain.Commands;
 using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
+using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
 using TemplateProject.Tasks.CommandHandlers;
@@ -26,11 +27,7 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddGenericRepositoriesTo(ContainerBuilder builder)
         {
-            builder.RegisterGeneric(typeof(NHibernateQuery<>)).As(typeof(IQuery<>));
-            builder.RegisterType<EntityDuplicateChecker>().As<IEntityDuplicateChecker>();
-            builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(INHibernateRepository<>));
-            builder.RegisterGeneric(typeof(NHibernateRepositoryWithTypedId<,>)).As(typeof(INHibernateRepositoryWithTypedId<,>));
-            builder.RegisterType<DefaultSessionFactoryKeyProvider>().As<ISessionFactoryKeyProvider>();
+            builder.RegisterModule<NHibernateModule>();
             builder.RegisterType<CommandProcessor>().As<ICommandProcessor>();
         }
 

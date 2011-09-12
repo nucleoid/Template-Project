@@ -143,6 +143,7 @@
     <Compile Include="NHibernateConfig\Conventions\PrimaryKeyConvention.cs" />
     <Compile Include="NHibernateConfig\Conventions\TableNameConvention.cs" />
     <Compile Include="NHibernateConfig\Maps\ProductMap.cs" />
+    <Compile Include="NHibernateConfig\NHibernateModule.cs" />
     <Compile Include="NHibernateConfig\ThreadAndWebSessionStorage.cs" />
     <Compile Include="NLogConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
