@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -107,7 +108,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> {new Category()});
 
             //Act
-            var result = _controller.Edit(new ProductEditViewModel {Product = new Product {Category = new Category()}}) as ViewResult;
+            var result = _controller.Edit(new Product {Category = new Category()}) as ViewResult;
 
             //Assert
             Assert.AreEqual("Create", result.ViewName);
@@ -131,7 +132,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> { new Category() });
 
             //Act
-            var result = _controller.Edit(new ProductEditViewModel {Product = product}) as ViewResult;
+            var result = _controller.Edit(product) as ViewResult;
 
             //Assert
             Assert.AreEqual(string.Empty, result.ViewName);
@@ -154,7 +155,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             var product = new Product {Name = "Blah", Category = new Category()};
 
             //Act
-            var result = _controller.Edit(new ProductEditViewModel {Product = product}) as RedirectToRouteResult;
+            var result = _controller.Edit(product) as RedirectToRouteResult;
 
             //Assert
             Assert.AreEqual("Index", result.RouteValues["Action"]);
@@ -207,10 +208,8 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ControllerContext = controllerContext;
             var form = new FormCollection {{"category", "3"}, {"1", "true,false"}, {"2", "false"}, {"3", "true,false"}};
             _controller.ValueProvider = form.ToValueProvider();
-            var results = new CommandResults();
-            results.AddResult(new MassCategoryChangeResult(true));
             _commandProcessor.Expect(x => x.Process(Arg<MassCategoryChangeCommand>.Matches(y =>
-                y.CategoryId == 3 && y.ProductIds.Count() == 2))).Return(results);
+                y.CategoryId == 3 && y.ProductIds.Count() == 2)));
 
             //Act
             var result = _controller.ChangeCategory(form) as ContentResult;
@@ -231,10 +230,8 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ControllerContext = controllerContext;
             var form = new FormCollection { { "category", "3" }, { "1", "true,false" }, { "2", "false" }, { "3", "true,false" } };
             _controller.ValueProvider = form.ToValueProvider();
-            var results = new CommandResults();
-            results.AddResult(new MassCategoryChangeResult(false));
             _commandProcessor.Expect(x => x.Process(Arg<MassCategoryChangeCommand>.Matches(y =>
-                y.CategoryId == 3 && y.ProductIds.Count() == 2))).Return(results);
+                y.CategoryId == 3 && y.ProductIds.Count() == 2))).WhenCalled(z => (z.Arguments[0] as MassCategoryChangeCommand).ValidationResults().Add(new ValidationResult("blah")));
 
             //Act
             var result = _controller.ChangeCategory(form) as ContentResult;

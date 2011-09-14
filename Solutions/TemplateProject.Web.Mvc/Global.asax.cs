@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac;
+using Autofac.Integration.Mvc;
 using Autofac.Integration.Web;
 using AutofacContrib.CommonServiceLocator;
 using NLog;
@@ -14,17 +16,13 @@ using TemplateProject.Infrastructure.FluentMigrations;
 using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Infrastructure.Quartz;
 using TemplateProject.Infrastructure.Quartz.Jobs;
-using TemplateProject.Web.Mvc.Areas.Admin.Models;
 using TemplateProject.Web.Mvc.Attributes;
 using TemplateProject.Web.Mvc.Autofac;
 using TemplateProject.Web.Mvc.Binders;
 using TemplateProject.Web.Mvc.Controllers;
 using Microsoft.Practices.ServiceLocation;
 using SharpArch.NHibernate;
-using SharpArch.Web.Mvc.ModelBinder;
 using System.Configuration;
-using Autofac;
-using Autofac.Integration.Mvc;
 using TemplateProject.Infrastructure;
 
 namespace TemplateProject.Web.Mvc
@@ -63,10 +61,9 @@ namespace TemplateProject.Web.Mvc
             _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-            ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
+//            ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
             InitializeAutofacDependencyResolver();
             ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
-            ModelBinders.Binders.Add(typeof(ProductEditViewModel), new ProductEditViewModelBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             AreaRegistration.RegisterAllAreas();
             RouteRegistrar.RegisterRoutesTo(RouteTable.Routes);
             RegisterGlobalFilters(GlobalFilters.Filters);

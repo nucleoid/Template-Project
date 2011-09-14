@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SharpArch.Testing;
@@ -31,9 +32,10 @@ namespace TemplateProject.Tests.Tasks.Commands
             //Arrange
             const int catId = 3;
             _categoryTasks.Expect(x => x.Get(catId)).Return(null);
+            var command = new MassCategoryChangeCommand(catId, new List<int>());
 
             //Act
-            var result = _handler.Handle(new MassCategoryChangeCommand(catId, new List<int>()));
+            var result = _handler.Handle(command);
 
             //Assert
             Assert.IsFalse(result.Success);
@@ -49,9 +51,10 @@ namespace TemplateProject.Tests.Tasks.Commands
             var productIds = new List<int> {2, 3, 4};
             _categoryTasks.Expect(x => x.Get(catId)).Return(new Category());
             _productTasks.Expect(x => x.Get(Arg<int>.Is.Anything)).Repeat.Once().Return(null);
+            var command = new MassCategoryChangeCommand(catId, productIds);
 
             //Act
-            var result = _handler.Handle(new MassCategoryChangeCommand(catId, productIds));
+            var result = _handler.Handle(command);
 
             //Assert
             Assert.IsFalse(result.Success);
@@ -74,10 +77,9 @@ namespace TemplateProject.Tests.Tasks.Commands
             _productTasks.AssertWasNotCalled(x => x.CreateOrUpdate(Arg<Product>.Is.Anything));
 
             //Act
-            var result = _handler.Handle(new MassCategoryChangeCommand(catId, productIds));
+            _handler.Handle(new MassCategoryChangeCommand(catId, productIds));
 
             //Assert
-            Assert.IsTrue(result.Success);
             _categoryTasks.VerifyAllExpectations();
             _productTasks.VerifyAllExpectations();
         }
@@ -105,10 +107,9 @@ namespace TemplateProject.Tests.Tasks.Commands
             _productTasks.Expect(x => x.CreateOrUpdate(Arg<Product>.Matches(y => y.Id == 4 && y.Category.Name == "sharp"))).Return(product3);
 
             //Act
-            var result = _handler.Handle(new MassCategoryChangeCommand(catId, productIds));
+            _handler.Handle(new MassCategoryChangeCommand(catId, productIds));
 
             //Assert
-            Assert.IsTrue(result.Success);
             _categoryTasks.VerifyAllExpectations();
             _productTasks.VerifyAllExpectations();
         }

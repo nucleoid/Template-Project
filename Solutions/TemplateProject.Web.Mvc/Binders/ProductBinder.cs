@@ -24,7 +24,7 @@ namespace TemplateProject.Web.Mvc.Binders
             if (model != null)
             {
                 BindCategory(bindingContext, model);
-                BindMultipleAvailability(controllerContext, bindingContext, model);
+//                BindMultipleAvailability(controllerContext, bindingContext, model);
             }
             return model;
         }

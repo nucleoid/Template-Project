@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
 using SharpArch.Domain.Commands;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Tasks.Commands;
@@ -21,14 +22,20 @@ namespace TemplateProject.Tasks.CommandHandlers
             var category = _categoryTasks.Get(command.CategoryId);
 
             if (category == null)
+            {
+                command.ValidationResults().Add(new ValidationResult("Category not found"));
                 return new MassCategoryChangeResult(false);
+            }
 
             foreach (var productId in command.ProductIds)
             {
                 var product = _productTasks.Get(productId);
 
                 if (product == null)
+                {
+                    command.ValidationResults().Add(new ValidationResult("Product not found"));
                     return new MassCategoryChangeResult(false);
+                }
 
                 if(product.Category.Id != category.Id)
                 {

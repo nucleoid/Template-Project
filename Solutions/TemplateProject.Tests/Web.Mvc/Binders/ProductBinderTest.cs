@@ -142,7 +142,8 @@ namespace TemplateProject.Tests.Web.Mvc
             var formCollection = new NameValueCollection 
             {
                 { "Product.Name", "Sploosh" }, 
-                { "Product.MultipleAvailability", string.Format("{0},{1}",FlaggedAvailability.Store.ToString(), FlaggedAvailability.ThirdParty.ToString()) }
+                { "Product.MultipleAvailability", string.Format("{0},{1},{2}",
+                    FlaggedAvailability.Online, FlaggedAvailability.Store, FlaggedAvailability.ThirdParty) }
             };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
@@ -162,7 +163,7 @@ namespace TemplateProject.Tests.Web.Mvc
             var result = _binder.BindModel(controllerContext, bindingContext) as Product;
 
             // Assert
-            Assert.AreEqual(FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result.MultipleAvailability);
+            Assert.AreEqual(FlaggedAvailability.Online | FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result.MultipleAvailability);
         }
     }
 }

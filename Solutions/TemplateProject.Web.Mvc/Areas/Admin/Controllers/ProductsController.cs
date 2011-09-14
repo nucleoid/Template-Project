@@ -68,22 +68,22 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         [Transaction]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Edit(ProductEditViewModel productEditViewModel)
+        public ActionResult Edit(Product product)
         {
-            if (ModelState.IsValid && productEditViewModel.Product.IsValid())
+            if (ModelState.IsValid && product.IsValid())
             {
-                _productTasks.CreateOrUpdate(productEditViewModel.Product);
+                _productTasks.CreateOrUpdate(product);
                 return this.RedirectToAction(x => x.Index(null));
             }
 
             var model = new ProductEditViewModel
             {
                 Categories = _categoryTasks.GetAll(),
-                Product = productEditViewModel.Product,
-                SelectedCategoryId = productEditViewModel.Product.Category.Id
+                Product = product,
+                SelectedCategoryId = product.Category.Id
             };
 
-            if (productEditViewModel.Product.Id == 0)
+            if (product.Id == 0)
                 return View("Create", model);
             return View(model);
         }
@@ -110,9 +110,9 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             }
 
             var command = new MassCategoryChangeCommand(catId, productIds);
-            var results = _commandProcessor.Process(command);
+            _commandProcessor.Process(command);
 
-            if (results.Success)
+            if (command.ValidationResults().Count == 0)
                 return new ContentResult { Content = "Categories successfully changed! Refresh to see the changes.", ContentType = "text/html" };
             return new ContentResult { Content = "One or more categories failed to change!", ContentType = "text/html" };
         }

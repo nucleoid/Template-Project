@@ -242,6 +242,11 @@ namespace TemplateProject.Tests.Infrastructure.NHibernateConfig.Conventions
                 get { throw new NotImplementedException(); }
             }
 
+            OptimisticLock ICollectionInspector.OptimisticLock
+            {
+                get { throw new NotImplementedException(); }
+            }
+
             ICollectionInstance ICollectionInstance.Not
             {
                 get { return Not; }
@@ -303,11 +308,6 @@ namespace TemplateProject.Tests.Infrastructure.NHibernateConfig.Conventions
             }
 
             Fetch ICollectionInspector.Fetch
-            {
-                get { throw new NotImplementedException(); }
-            }
-
-            OptimisticLock ICollectionInspector.OptimisticLock
             {
                 get { throw new NotImplementedException(); }
             }

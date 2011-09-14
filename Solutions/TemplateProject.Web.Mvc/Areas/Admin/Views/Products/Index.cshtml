@@ -12,7 +12,7 @@
 @(Html.ActionLink<ProductsController>(x => x.Create(), "Create New Product"))
 
 <div id="products">
-@using (Html.  BeginForm("ChangeCategory", "Products"))
+@using (Html.BeginForm("ChangeCategory", "Products"))
 {
     <text>
     @Html.Grid(Model).Columns(column =>

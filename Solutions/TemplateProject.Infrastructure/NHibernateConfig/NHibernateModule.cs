@@ -9,7 +9,7 @@ namespace TemplateProject.Infrastructure.NHibernateConfig
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterGeneric(typeof(NHibernateQuery<>)).As(typeof(IQuery<>));
+            builder.RegisterType<NHibernateQuery>();
             builder.RegisterType<EntityDuplicateChecker>().As<IEntityDuplicateChecker>();
             builder.RegisterGeneric(typeof(NHibernateRepository<>)).As(typeof(INHibernateRepository<>));
             builder.RegisterGeneric(typeof(NHibernateRepositoryWithTypedId<,>)).As(typeof(INHibernateRepositoryWithTypedId<,>));

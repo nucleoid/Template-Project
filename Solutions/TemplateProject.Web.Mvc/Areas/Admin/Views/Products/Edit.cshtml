@@ -33,3 +33,36 @@
     </text>
 }
 @(Html.ActionLink<ProductsController>(x => x.Delete(Model.Product.Id), "Delete This Product"))
+
+<script type="text/javascript">
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                //                if (!o[this.name].push) {
+                //                    o[this.name] = [o[this.name]];
+                //                }
+                //                o[this.name].push(this.value || '');
+                o[this.name] = o[this.name] + ',' + this.value;
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    $(document).ready(function () {
+        $('form').live('submit', function () {
+            var formValues = jQuery.param($(this).serializeObject());
+            $.post($(this).attr('action'), formValues, function (data) {
+                if (data.redirect) {
+                    window().location.href = data.redirect;
+                } else {
+                    $('form').replaceWith(data.form);
+                }
+            });
+            return false;
+        });
+    });
+</script>
