@@ -167,7 +167,6 @@
     <Compile Include="Areas\Admin\Models\ProductEditViewModel.cs" />
     <Compile Include="Attributes\HandleErrorAttribute.cs" />
     <Compile Include="Autofac\ComponentRegistrar.cs" />
-    <Compile Include="Binders\FlaggedAvailabilityBinder.cs" />
     <Compile Include="Binders\ProductBinder.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -182,6 +181,7 @@
     <Content Include="Content\flash\htf.swf" />
     <Content Include="Content\img\sharp_arch.jpg" />
     <Content Include="Content\img\sharp_arch_small.gif" />
+    <Content Include="Content\js\formUtilities.js" />
     <Content Include="Content\js\jquery-1.6.1.min.js" />
     <Content Include="Content\js\modernizr-1.7.min.js" />
     <Content Include="Content\js\NameValidation.js" />

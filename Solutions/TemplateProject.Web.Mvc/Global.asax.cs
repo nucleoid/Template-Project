@@ -10,6 +10,7 @@ using AutofacContrib.CommonServiceLocator;
 using NLog;
 using Quartz;
 using Quartz.Impl;
+using SharpArch.Web.Mvc.ModelBinder;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.FluentMigrations;
@@ -61,7 +62,7 @@ namespace TemplateProject.Web.Mvc
             _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-//            ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
+            ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
             InitializeAutofacDependencyResolver();
             ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             AreaRegistration.RegisterAllAreas();

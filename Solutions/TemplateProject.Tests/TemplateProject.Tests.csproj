@@ -137,7 +137,6 @@
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
     <Compile Include="Domain\Validation\Attributes\NameValidationAttributeTest.cs" />
     <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
-    <Compile Include="Web.Mvc\Binders\FlaggedAvailabilityBinderTest.cs" />
     <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />
     <Compile Include="Web.Mvc\Controllers\HomeControllerTests.cs" />
     <Compile Include="Web.Mvc\Controllers\RouteRegistrarTest.cs" />

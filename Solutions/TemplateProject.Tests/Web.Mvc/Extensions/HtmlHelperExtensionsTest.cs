@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MbUnit.Framework;
 using Rhino.Mocks;
+using TemplateProject.Domain;
 using TemplateProject.Web.Mvc.Extensions;
 
 namespace TemplateProject.Tests.Web.Mvc.Extensions
@@ -84,12 +86,100 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
             Assert.AreEqual("<a coolness=\"11\" href=\"/SecretArea/Test/Tester\">test link</a>", linkage.ToString());
         }
 
+        [Test, ExpectedArgumentException("TProperty must be a flags enum")]
+        public void CheckBoxesForFlagsEnum_Without_Enum_Property()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            helper.CheckBoxesForFlagsEnum(x => x.NotEnum, TestFlagsEnum.Blah);
+        }
+
+        [Test, ExpectedArgumentException("TProperty must be a flags enum")]
+        public void CheckBoxesForFlagsEnum_Without_Flags_Enum_Property()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            helper.CheckBoxesForFlagsEnum(x => x.Test, TestEnum.Generic);
+        }
+
+        [Test]
+        public void CheckBoxesForFlagsEnum_Outputs_Checkboxes_And_Hidden_Field()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            var checkBoxes = helper.CheckBoxesForFlagsEnum(x => x.TestFlags, TestFlagsEnum.OtherBlah);
+
+            //Assert
+            Assert.AreEqual("<label for=\"Not_TestFlags\">Blah</label> <input flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"Blah\" />\r\n<label for=\"Not_TestFlags\">OtherBlah</label> <input checked=\"checked\" flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"OtherBlah\" />\r\n<input id=\"TestFlags\" name=\"TestFlags\" type=\"hidden\" value=\"OtherBlah\" />",
+                checkBoxes.ToString());
+        }
+
+        [Test]
+        public void CheckBoxesForFlagsEnum_Outputs_Checkboxes_And_Hidden_Field_With_Null_Value()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            var checkBoxes = helper.CheckBoxesForFlagsEnum(x => x.NullableTestFlags, null);
+
+            //Assert
+            Assert.AreEqual("<label for=\"Not_NullableTestFlags\">Blah</label> <input flaggedenum=\"true\" id=\"Not_NullableTestFlags\" name=\"Not.NullableTestFlags\" type=\"checkbox\" value=\"Blah\" />\r\n<label for=\"Not_NullableTestFlags\">OtherBlah</label> <input flaggedenum=\"true\" id=\"Not_NullableTestFlags\" name=\"Not.NullableTestFlags\" type=\"checkbox\" value=\"OtherBlah\" />\r\n<input id=\"NullableTestFlags\" name=\"NullableTestFlags\" type=\"hidden\" value=\"\" />",
+                checkBoxes.ToString());
+        }
+
+        [Test]
+        public void CheckBoxesForFlagsEnum_CheckBoxHtmlAttributes_Outputs_Checkboxes_And_Hidden_Field()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            var checkBoxes = helper.CheckBoxesForFlagsEnum(x => x.TestFlags, TestFlagsEnum.OtherBlah, new { awesomize = "yes" });
+
+            //Assert
+            Assert.AreEqual("<label for=\"Not_TestFlags\">Blah</label> <input awesomize=\"yes\" flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"Blah\" />\r\n<label for=\"Not_TestFlags\">OtherBlah</label> <input awesomize=\"yes\" checked=\"checked\" flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"OtherBlah\" />\r\n<input id=\"TestFlags\" name=\"TestFlags\" type=\"hidden\" value=\"OtherBlah\" />",
+                checkBoxes.ToString());
+        }
+
         private class TestController : Controller
         {
             public ActionResult Tester()
             {
                 return null;
             }
+        }
+
+        private class TestModel
+        {
+            public string NotEnum { get; set; }
+            public TestFlagsEnum TestFlags { get; set; }
+            public TestFlagsEnum? NullableTestFlags { get; set; }
+            public TestEnum Test { get; set; }
+        }
+
+        [Flags]
+        private enum TestFlagsEnum
+        {
+            Blah = 1,
+            OtherBlah = 2
+        }
+
+        private enum TestEnum
+        {
+            Generic,
+            NotGeneric
         }
     }
 }

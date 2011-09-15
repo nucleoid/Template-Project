@@ -23,9 +23,7 @@
     @Availability.ThirdParty.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.ThirdParty)  @Html.ValidationMessageFor(x => x.Product.DefaultAvailability)</div>
 
     @Html.LabelFor(x => x.Product.MultipleAvailability)
-    <div>@FlaggedAvailability.Online.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.Online) == FlaggedAvailability.Online, FlaggedAvailability.Online)
-    @FlaggedAvailability.Store.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.Store) == FlaggedAvailability.Store, FlaggedAvailability.Store)
-    @FlaggedAvailability.ThirdParty.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", (Model.Product.MultipleAvailability & FlaggedAvailability.ThirdParty) == FlaggedAvailability.ThirdParty, FlaggedAvailability.ThirdParty) @Html.ValidationMessageFor(x => x.Product.MultipleAvailability)</div>
+    <div>@Html.CheckBoxesForFlagsEnum(x => x.Product.MultipleAvailability, Model.Product.MultipleAvailability)</div>
 
     @Html.LabelFor(x => x.Product.Category)
     <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"))  </div>
@@ -34,35 +32,3 @@
 }
 @(Html.ActionLink<ProductsController>(x => x.Delete(Model.Product.Id), "Delete This Product"))
 
-<script type="text/javascript">
-    $.fn.serializeObject = function () {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function () {
-            if (o[this.name] !== undefined) {
-                //                if (!o[this.name].push) {
-                //                    o[this.name] = [o[this.name]];
-                //                }
-                //                o[this.name].push(this.value || '');
-                o[this.name] = o[this.name] + ',' + this.value;
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
-
-    $(document).ready(function () {
-        $('form').live('submit', function () {
-            var formValues = jQuery.param($(this).serializeObject());
-            $.post($(this).attr('action'), formValues, function (data) {
-                if (data.redirect) {
-                    window().location.href = data.redirect;
-                } else {
-                    $('form').replaceWith(data.form);
-                }
-            });
-            return false;
-        });
-    });
-</script>

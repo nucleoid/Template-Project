@@ -24,12 +24,25 @@
     @Availability.ThirdParty.ToString() @Html.RadioButtonFor(x => x.Product.DefaultAvailability, Availability.ThirdParty)  @Html.ValidationMessageFor(x => x.Product.DefaultAvailability)</div>
 
     @Html.LabelFor(x => x.Product.MultipleAvailability)
-    <div>@FlaggedAvailability.Online.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.Online)
-    @FlaggedAvailability.Store.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.Store)
-    @FlaggedAvailability.ThirdParty.ToString() @Html.CheckBoxWithValue("Product.MultipleAvailability", FlaggedAvailability.ThirdParty)</div>
+    <div>@FlaggedAvailability.Online.ToString() @Html.CheckBoxWithValue("MultipleAvailabilities", FlaggedAvailability.Online)
+    @FlaggedAvailability.Store.ToString() @Html.CheckBoxWithValue("MultipleAvailabilities", FlaggedAvailability.Store)
+    @FlaggedAvailability.ThirdParty.ToString() @Html.CheckBoxWithValue("MultipleAvailabilities", FlaggedAvailability.ThirdParty)
+    @Html.HiddenFor(x => x.Product.MultipleAvailability)
+    </div>
 
     @Html.LabelFor(x => x.Product.Category)
     <div>@Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"), "Select a Category")  @Html.ValidationMessageFor(x => x.SelectedCategoryId)</div>
     <input type="submit" value = "Create Product" />
     </text>
 }
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('form').one('submit', function (e) {
+            e.preventDefault();
+            var multiChecked = $("[name='MultipleAvailabilities']:checked").map(function () { return this.value; }).get().join(',');
+            $('#Product_MultipleAvailability').val(multiChecked);
+            $(this).submit();
+        });
+    });
+</script>

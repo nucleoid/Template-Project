@@ -18,4 +18,4 @@
                   @(product.Index < Model.Products.Count - 1 ? product.Data.Name+", " : product.Data.Name)
               }</li>
 </ul>
-@(Html.ActionLink<ProductsController>(x => x.Edit(Model.Id), "Edit"))
+@(Html.ActionLink<CategoriesController>(x => x.Edit(Model.Id), "Edit"))

@@ -11,6 +11,7 @@
 {
     <text>
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
     @Html.LabelFor(x => x.Name)
     <div>@Html.TextBoxFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)</div>
     <input type="submit" value = "Save Category" />
