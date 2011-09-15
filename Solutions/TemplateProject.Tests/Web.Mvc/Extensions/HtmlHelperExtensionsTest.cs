@@ -153,6 +153,21 @@ namespace TemplateProject.Tests.Web.Mvc.Extensions
                 checkBoxes.ToString());
         }
 
+        [Test]
+        public void CheckBoxesForFlagsEnum_With_Multiple_Values_Checked()
+        {
+            //Arrange
+            var vdd = new ViewDataDictionary<TestModel>();
+            HtmlHelper<TestModel> helper = MvcHelper.GetHtmlHelper(vdd);
+
+            //Act
+            var checkBoxes = helper.CheckBoxesForFlagsEnum(x => x.TestFlags, TestFlagsEnum.Blah | TestFlagsEnum.OtherBlah);
+
+            //Assert
+            Assert.AreEqual("<label for=\"Not_TestFlags\">Blah</label> <input checked=\"checked\" flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"Blah\" />\r\n<label for=\"Not_TestFlags\">OtherBlah</label> <input checked=\"checked\" flaggedenum=\"true\" id=\"Not_TestFlags\" name=\"Not.TestFlags\" type=\"checkbox\" value=\"OtherBlah\" />\r\n<input id=\"TestFlags\" name=\"TestFlags\" type=\"hidden\" value=\"Blah, OtherBlah\" />",
+                checkBoxes.ToString());
+        }
+
         private class TestController : Controller
         {
             public ActionResult Tester()

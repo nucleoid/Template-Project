@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Web;
@@ -55,7 +56,8 @@ namespace TemplateProject.Web.Mvc.Extensions
         /// <summary>
         /// Outputs a group of checkboxes, one for each enum value and a hidden field at the end to hold the transformed value.
         /// The checkbox names are prefixed with "Not." in order for the formUtilities.js script to work with the flag enum form posts.
-        /// A special html attribute is also added to the checkboxes to signify the flag enum type
+        /// A special html attribute is also added to the checkboxes to signify the flag enum type.
+        /// The hidden field is what is used to hold the actual value to bind.
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
@@ -68,6 +70,19 @@ namespace TemplateProject.Web.Mvc.Extensions
             return CheckBoxesForFlagsEnum(htmlHelper, expression, value, null);
         }
 
+        /// <summary>
+        /// Outputs a group of checkboxes, one for each enum value and a hidden field at the end to hold the transformed value.
+        /// The checkbox names are prefixed with "Not." in order for the formUtilities.js script to work with the flag enum form posts.
+        /// A special html attribute is also added to the checkboxes to signify the flag enum type.
+        /// The hidden field is what is used to hold the actual value to bind.
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="htmlHelper"></param>
+        /// <param name="expression"></param>
+        /// <param name="value"></param>
+        /// <param name="checkBoxHtmlAttributes"></param>
+        /// <returns></returns>
         public static IHtmlString CheckBoxesForFlagsEnum<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, object value, object checkBoxHtmlAttributes)
         {
             if ((!typeof(TProperty).IsEnum && !IsNullableEnum<TProperty>()) || !HasFlagsAttribute<TProperty>())
@@ -78,7 +93,7 @@ namespace TemplateProject.Web.Mvc.Extensions
             var name = ExpressionHelper.GetExpressionText(expression);
             foreach (var enumValue in enumValues)
             {
-                var isChecked = value != null && enumValue.ToString() == checkedValue.ToString();
+                var isChecked = value != null && checkedValue.ToString().Split(',').Any(x => x.Trim() == enumValue.ToString());
                 var attributes = new RouteValueDictionary(checkBoxHtmlAttributes) {{"flaggedenum", "true"}};
                 var notName = string.Format("Not.{0}", name);
                 var checkboxTagBuilder = CheckboxTagBuilder(notName, isChecked, enumValue, attributes);
