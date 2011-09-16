@@ -39,7 +39,6 @@ namespace TemplateProject.Tests.Web.Mvc.Autofac
             //Assert
             Assert.IsTrue(_container.IsRegistered<IEntityDuplicateChecker>());
             Assert.IsTrue(_container.IsRegistered(typeof(INHibernateRepository<Product>)));
-            //            Assert.IsTrue(container.IsRegistered(typeof(INHibernateRepositoryWithTypedId<,>))); //none yet
             Assert.IsTrue(_container.IsRegistered<ISessionFactoryKeyProvider>());
             Assert.IsTrue(_container.IsRegistered<ICommandProcessor>());
         }

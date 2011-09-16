@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Web.Helpers;
 using SharpArch.Domain.Commands;
 using SharpArch.NHibernate.Web.Mvc;
 using TemplateProject.Domain;
@@ -70,11 +71,16 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(Product product)
         {
-            if (ModelState.IsValid && product.IsValid())
+            if (ReCaptcha.Validate(privateKey: "6LcX-8cSAAAAAApTQp4BlLU6oTZuNl29r6Trk8QW "))
             {
-                _productTasks.CreateOrUpdate(product);
-                return this.RedirectToAction(x => x.Index(null));
+                if (ModelState.IsValid && product.IsValid())
+                {
+                    _productTasks.CreateOrUpdate(product);
+                    return this.RedirectToAction(x => x.Index(null));
+                }
             }
+            else
+                ModelState.AddModelError("ReCaptcha", "ReCaptcha failed!");
 
             var model = new ProductEditViewModel
             {

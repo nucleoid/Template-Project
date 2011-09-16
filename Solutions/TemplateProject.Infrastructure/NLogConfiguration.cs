@@ -44,7 +44,7 @@ namespace TemplateProject.Infrastructure
             var fileTarget = new FileTarget();
             config.AddTarget("file", fileTarget);
 
-            fileTarget.FileName = "${basedir}/filelog.log";
+            fileTarget.FileName = "${basedir}/filelog_${shortdate}.log";
             fileTarget.Layout = "${longdate} ${message} ${onexception:EXCEPTION OCCURRED\\:${exception:format=tostring}}";
 
             var fileRule = new LoggingRule("*", LogLevel.Debug, fileTarget);
