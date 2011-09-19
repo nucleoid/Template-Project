@@ -2,11 +2,11 @@
 @model IList<Category>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Categories";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Categories</h2>
 
 @Html.Grid(Model).Columns(column =>
 {

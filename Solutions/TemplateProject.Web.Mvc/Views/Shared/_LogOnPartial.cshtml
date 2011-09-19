@@ -1,0 +1,9 @@
+﻿@using TemplateProject.Web.Mvc.Extensions
+
+@if(Request.IsAuthenticated) {
+    <text>Welcome <strong>@User.Identity.Name</strong>!
+    [ @(Html.ActionLinkArea<AccountController>(x => x.LogOff(), "Log Off", null)) ]</text>
+}
+else {
+    @:[ @(Html.ActionLinkArea<AccountController>(x => x.LogOn(), "Log On", null)) ]
+}

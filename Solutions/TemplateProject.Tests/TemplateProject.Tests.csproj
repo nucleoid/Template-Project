@@ -99,11 +99,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\Packages\System.Data.SQLite.1.0.66.1\lib\System.Data.SQLite.DLL</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\ASP.NET MVC\System.Web.Mvc.dll</HintPath>
@@ -117,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Domain\CategoryTest.cs" />
     <Compile Include="Domain\Validation\ModelClientNameValidationRuleTest.cs" />
+    <Compile Include="Infrastructure\FluentMigrations\IExecuteExpressionRootExtensionsTest.cs" />
     <Compile Include="Infrastructure\FluentMigrations\MigrationSafeTest.cs" />
     <Compile Include="Infrastructure\FluentMigrations\RunnerTest.cs" />
     <Compile Include="Infrastructure\NHibernateConfig\AutomappingConfigurationTest.cs" />
@@ -137,6 +140,7 @@
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
     <Compile Include="Domain\Validation\Attributes\NameValidationAttributeTest.cs" />
     <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
+    <Compile Include="Web.Mvc\Controllers\AccountControllerTest.cs" />
     <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />
     <Compile Include="Web.Mvc\Controllers\HomeControllerTests.cs" />
     <Compile Include="Web.Mvc\Controllers\RouteRegistrarTest.cs" />
@@ -144,6 +148,8 @@
     <Compile Include="Web.Mvc\Extensions\IntegerExtensionsTest.cs" />
     <Compile Include="Web.Mvc\Binders\ProductBinderTest.cs" />
     <Compile Include="Web.Mvc\MvcHelper.cs" />
+    <Compile Include="Web.Mvc\SimulatedHttpRequest.cs" />
+    <Compile Include="Web.Mvc\TestProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">

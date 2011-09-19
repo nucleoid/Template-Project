@@ -367,3 +367,6 @@ a.large.button, a.large.button:visited { font-size: 14px; padding: 8px 14px 9px;
 	width: 1px;
 	height: 3px;
 }
+#logindisplay {
+    float: right;
+}

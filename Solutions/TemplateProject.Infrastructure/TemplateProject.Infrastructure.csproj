@@ -136,7 +136,9 @@
     <Compile Include="..\..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FluentMigrations\IExecuteExpressionRootExtensions.cs" />
     <Compile Include="FluentMigrations\Migrations\Migration_0001.cs" />
+    <Compile Include="FluentMigrations\Migrations\Migration_0002.cs" />
     <Compile Include="FluentMigrations\Runner.cs" />
     <Compile Include="FluentMigrations\MigrationSafe.cs" />
     <Compile Include="NHibernateConfig\AutoPersistenceModelGenerator.cs" />
@@ -185,6 +187,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FluentMigrations\Migrations\Scripts\aspNetAppServices.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
