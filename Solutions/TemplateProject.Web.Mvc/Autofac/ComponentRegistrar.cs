@@ -3,13 +3,13 @@ using System.Reflection;
 using Autofac;
 using Autofac.Integration.Mvc;
 using SharpArch.Domain.Commands;
-using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
-using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
 using TemplateProject.Tasks.CommandHandlers;
+using TemplateProject.Tasks.CustomContracts;
+using TemplateProject.Web.Mvc.Wrappers;
 
 namespace TemplateProject.Web.Mvc.Autofac
 {
@@ -33,7 +33,9 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddCustomRepositoriesTo(ContainerBuilder builder)
         {
-            //none yet
+            builder.RegisterType<FormsAuthWrapper>().As<IAuthenticationTasks>();
+            builder.RegisterType<MembershipWrapper>().As<IMembershipTasks>();
+            builder.RegisterType<ReCaptchaWrapper>().As<ICaptchaTasks>();
         }
 
         private static void AddQueryObjectsTo(ContainerBuilder builder)

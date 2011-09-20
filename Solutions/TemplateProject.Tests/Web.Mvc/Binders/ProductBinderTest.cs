@@ -42,7 +42,7 @@ namespace TemplateProject.Tests.Web.Mvc
             };
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
 
             // Act
             var result = _binder.BindModel(controllerContext, bindingContext);
@@ -68,7 +68,7 @@ namespace TemplateProject.Tests.Web.Mvc
             };
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
 
             // Act
             var result = _binder.BindModel(controllerContext, bindingContext) as Product;
@@ -96,7 +96,7 @@ namespace TemplateProject.Tests.Web.Mvc
             };
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
 
             // Act
             var result = _binder.BindModel(controllerContext, bindingContext) as Product;
@@ -123,7 +123,7 @@ namespace TemplateProject.Tests.Web.Mvc
             };
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
             _categoryTasks.Expect(x => x.Get(2)).Return(new Category {Name = "Bones"});
 
             // Act
@@ -157,7 +157,7 @@ namespace TemplateProject.Tests.Web.Mvc
             };
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
-            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null));
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
 
             // Act
             var result = _binder.BindModel(controllerContext, bindingContext) as Product;

@@ -176,12 +176,16 @@
     <Compile Include="Controllers\RouteRegistrar.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wrappers\FormsAuthWrapper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Wrappers\MembershipWrapper.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\LogOnModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Wrappers\ReCaptchaWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\flash\htf.swf" />

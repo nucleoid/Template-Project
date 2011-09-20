@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
+using TemplateProject.Tasks.CustomContracts;
 using TemplateProject.Web.Mvc.Attributes;
 using TemplateProject.Web.Mvc.Models;
 
@@ -8,6 +9,15 @@ namespace TemplateProject.Web.Mvc.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAuthenticationTasks _authTasks;
+        private readonly IMembershipTasks _membershipTasks;
+
+        public AccountController(IAuthenticationTasks authTasks, IMembershipTasks membershipTasks)
+        {
+            _authTasks = authTasks;
+            _membershipTasks = membershipTasks;
+        }
+
         [AllowAnonymous]
         public ActionResult LogOn()
         {
@@ -18,11 +28,11 @@ namespace TemplateProject.Web.Mvc.Controllers
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.IsValid())
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                if (_membershipTasks.ValidateUser(model.UserName, model.Password))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                    _authTasks.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -38,7 +48,7 @@ namespace TemplateProject.Web.Mvc.Controllers
 
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
+            _authTasks.SignOut();
 
             return RedirectToAction("Index", "Home");
         }
@@ -46,45 +56,45 @@ namespace TemplateProject.Web.Mvc.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            return View(new RegisterModel { MinRequiredPasswordLength = _membershipTasks.MinRequiredPasswordLength });
         }
 
         [AllowAnonymous]
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.IsValid())
             {
                 MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+                _membershipTasks.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    _authTasks.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                ModelState.AddModelError(string.Empty, ErrorCodeToString(createStatus));
             }
-
+            model.MinRequiredPasswordLength = _membershipTasks.MinRequiredPasswordLength;
             return View(model);
         }
 
         [Authorize]
         public ActionResult ChangePassword()
         {
-            return View();
+            return View(new ChangePasswordModel {MinRequiredPasswordLength = _membershipTasks.MinRequiredPasswordLength});
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.IsValid())
             {
                 bool changePasswordSucceeded;
                 try
                 {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                    MembershipUser currentUser = _membershipTasks.GetUser(User.Identity.Name, true /* userIsOnline */);
                     changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
                 }
                 catch (Exception)
@@ -93,12 +103,12 @@ namespace TemplateProject.Web.Mvc.Controllers
                 }
 
                 if (changePasswordSucceeded)
-                {
                     return RedirectToAction("ChangePasswordSuccess");
-                }
-                ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+
+                ModelState.AddModelError(string.Empty, "The current password is incorrect or the new password is invalid.");
             }
 
+            model.MinRequiredPasswordLength = _membershipTasks.MinRequiredPasswordLength;
             return View(model);
         }
 
@@ -107,7 +117,7 @@ namespace TemplateProject.Web.Mvc.Controllers
             return View();
         }
 
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
+        internal static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             switch (createStatus)
             {

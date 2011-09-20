@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +14,7 @@ using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks.Commands;
+using TemplateProject.Tasks.CustomContracts;
 using TemplateProject.Web.Mvc.Areas.Admin.Controllers;
 using TemplateProject.Web.Mvc.Areas.Admin.Models;
 
@@ -26,6 +27,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         private ICategoryTasks _categoryTasks;
         private IProductsQuery _productsQuery;
         private ICommandProcessor _commandProcessor;
+        private ICaptchaTasks _captchaTasks;
         private ProductsController _controller;
 
         [SetUp]
@@ -35,7 +37,8 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _categoryTasks = MockRepository.GenerateMock<ICategoryTasks>();
             _productsQuery = MockRepository.GenerateMock<IProductsQuery>();
             _commandProcessor = MockRepository.GenerateMock<ICommandProcessor>();
-            _controller = new ProductsController(_productTasks, _categoryTasks, _productsQuery, _commandProcessor);
+            _captchaTasks = MockRepository.GenerateMock<ICaptchaTasks>();
+            _controller = new ProductsController(_productTasks, _categoryTasks, _productsQuery, _commandProcessor, _captchaTasks);
         }
 
         [Test]
@@ -97,6 +100,29 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
+        public void Edit_Validates_Bad_Captcha_And_Forwards()
+        {
+            //Arrange
+            var routeData = new RouteData();
+            var httpContext = MockRepository.GenerateStub<HttpContextBase>();
+            var controllerContext = MockRepository.GenerateStub<ControllerContext>(httpContext, routeData, _controller);
+            _controller.ControllerContext = controllerContext;
+            _controller.ValueProvider = new FormCollection().ToValueProvider();
+            _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> { new Category() });
+            var request = new SimulatedHttpRequest("/", string.Empty, string.Empty, string.Empty, null, "localhost");
+            HttpContext.Current = new HttpContext(request);
+            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(false);
+
+            //Act
+            var result = _controller.Edit(new Product { Category = new Category() }) as ViewResult;
+
+            //Assert
+            Assert.AreEqual("ReCaptcha failed!", result.ViewData.ModelState["ReCaptcha"].Errors[0].ErrorMessage);
+            _categoryTasks.VerifyAllExpectations();
+            _captchaTasks.VerifyAllExpectations();
+        }
+
+        [Test]
         public void Edit_Validates_Bad_Model_And_Forwards_To_Create()
         {
             //Arrange
@@ -106,6 +132,9 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ControllerContext = controllerContext;
             _controller.ValueProvider = new FormCollection().ToValueProvider();
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> {new Category()});
+            var request = new SimulatedHttpRequest("/", string.Empty, string.Empty, string.Empty, null, "localhost");
+            HttpContext.Current = new HttpContext(request);
+            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
             var result = _controller.Edit(new Product {Category = new Category()}) as ViewResult;
@@ -116,6 +145,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             Assert.AreEqual(0, (result.Model as ProductEditViewModel).Product.Id);
             Assert.AreEqual(1, (result.Model as ProductEditViewModel).Categories.Count);
             _categoryTasks.VerifyAllExpectations();
+            _captchaTasks.VerifyAllExpectations();
         }
 
         [Test]
@@ -130,6 +160,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             var product = new Product {Category = new Category()};
             product.SetIdTo(2);
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> { new Category() });
+            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
             var result = _controller.Edit(product) as ViewResult;
@@ -140,6 +171,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             Assert.AreEqual(2, (result.Model as ProductEditViewModel).Product.Id);
             Assert.AreEqual(1, (result.Model as ProductEditViewModel).Categories.Count);
             _categoryTasks.VerifyAllExpectations();
+            _captchaTasks.VerifyAllExpectations();
         }
 
         [Test]
@@ -153,6 +185,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ValueProvider = new FormCollection().ToValueProvider();
             _productTasks.Expect(x => x.CreateOrUpdate(Arg<Product>.Is.Anything)).Return(new Product());
             var product = new Product {Name = "Blah", Category = new Category()};
+            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
             var result = _controller.Edit(product) as RedirectToRouteResult;
@@ -160,6 +193,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             //Assert
             Assert.AreEqual("Index", result.RouteValues["Action"]);
             _productTasks.VerifyAllExpectations();
+            _captchaTasks.VerifyAllExpectations();
         }
 
         [Test]
@@ -209,7 +243,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             var form = new FormCollection {{"category", "3"}, {"1", "true,false"}, {"2", "false"}, {"3", "true,false"}};
             _controller.ValueProvider = form.ToValueProvider();
             _commandProcessor.Expect(x => x.Process(Arg<MassCategoryChangeCommand>.Matches(y =>
-                y.CategoryId == 3 && y.ProductIds.Count() == 2)));
+                y.CategoryId == 3 && y.ProductIds.Count() == 2))).Return(new CommandResults());
 
             //Act
             var result = _controller.ChangeCategory(form) as ContentResult;
@@ -230,8 +264,10 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ControllerContext = controllerContext;
             var form = new FormCollection { { "category", "3" }, { "1", "true,false" }, { "2", "false" }, { "3", "true,false" } };
             _controller.ValueProvider = form.ToValueProvider();
+            var results = new CommandResults();
+            results.AddResult(new MassCategoryChangeResult(false));
             _commandProcessor.Expect(x => x.Process(Arg<MassCategoryChangeCommand>.Matches(y =>
-                y.CategoryId == 3 && y.ProductIds.Count() == 2))).WhenCalled(z => (z.Arguments[0] as MassCategoryChangeCommand).ValidationResults().Add(new ValidationResult("blah")));
+                y.CategoryId == 3 && y.ProductIds.Count() == 2))).Return(results);
 
             //Act
             var result = _controller.ChangeCategory(form) as ContentResult;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Web.Helpers;
@@ -10,6 +11,7 @@ using TemplateProject.Domain.Contracts.Tasks;
 using MvcContrib;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks.Commands;
+using TemplateProject.Tasks.CustomContracts;
 using TemplateProject.Web.Mvc.Areas.Admin.Models;
 
 namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
@@ -20,15 +22,18 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         private readonly ICategoryTasks _categoryTasks;
         private readonly IProductsQuery _productsQuery;
         private readonly ICommandProcessor _commandProcessor;
+        private readonly ICaptchaTasks _captchaTasks;
 
         private const int DefaultPageSize = 10;
 
-        public ProductsController(IProductTasks productTasks, ICategoryTasks categoryTasks, IProductsQuery productsQuery, ICommandProcessor commandProcessor)
+        public ProductsController(IProductTasks productTasks, ICategoryTasks categoryTasks, IProductsQuery productsQuery, 
+            ICommandProcessor commandProcessor, ICaptchaTasks captchaTasks)
         {
             _productTasks = productTasks;
             _categoryTasks = categoryTasks;
             _productsQuery = productsQuery;
             _commandProcessor = commandProcessor;
+            _captchaTasks = captchaTasks;
         }
 
         public ActionResult Index(int? page)
@@ -71,7 +76,7 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit(Product product)
         {
-            if (ReCaptcha.Validate(privateKey: "6LcX-8cSAAAAAApTQp4BlLU6oTZuNl29r6Trk8QW "))
+            if (_captchaTasks.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"]))
             {
                 if (ModelState.IsValid && product.IsValid())
                 {
@@ -116,9 +121,8 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             }
 
             var command = new MassCategoryChangeCommand(catId, productIds);
-            _commandProcessor.Process(command);
-
-            if (command.ValidationResults().Count == 0)
+            var results = _commandProcessor.Process(command);
+            if (results.Success)
                 return new ContentResult { Content = "Categories successfully changed! Refresh to see the changes.", ContentType = "text/html" };
             return new ContentResult { Content = "One or more categories failed to change!", ContentType = "text/html" };
         }

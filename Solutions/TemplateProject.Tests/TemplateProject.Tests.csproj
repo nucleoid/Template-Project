@@ -149,7 +149,6 @@
     <Compile Include="Web.Mvc\Binders\ProductBinderTest.cs" />
     <Compile Include="Web.Mvc\MvcHelper.cs" />
     <Compile Include="Web.Mvc\SimulatedHttpRequest.cs" />
-    <Compile Include="Web.Mvc\TestProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">

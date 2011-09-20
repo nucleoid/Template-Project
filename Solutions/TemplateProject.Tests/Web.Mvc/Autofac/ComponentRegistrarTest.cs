@@ -10,7 +10,9 @@ using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.Queries;
+using TemplateProject.Tasks;
 using TemplateProject.Tasks.Commands;
+using TemplateProject.Tasks.CustomContracts;
 using TemplateProject.Web.Mvc.Autofac;
 using TemplateProject.Web.Mvc.Controllers;
 
@@ -43,11 +45,13 @@ namespace TemplateProject.Tests.Web.Mvc.Autofac
             Assert.IsTrue(_container.IsRegistered<ICommandProcessor>());
         }
 
-        //none yet
-//        [Test]
-//        public void AddComponentsTo_Adds_Custom_Repositories()
-//        {
-//        }
+        [Test]
+        public void AddComponentsTo_Adds_Custom_Repositories()
+        {
+            Assert.IsTrue(_container.IsRegistered<IAuthenticationTasks>());
+            Assert.IsTrue(_container.IsRegistered<IMembershipTasks>());
+            Assert.IsTrue(_container.IsRegistered<ICaptchaTasks>());
+        }
 
         [Test]
         public void AddComponentsTo_Adds_Query_Objects()

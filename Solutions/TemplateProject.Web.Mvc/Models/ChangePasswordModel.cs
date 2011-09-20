@@ -1,9 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
+using SharpArch.Domain.DomainModel;
 
 namespace TemplateProject.Web.Mvc.Models
 {
-    public class ChangePasswordModel
+    public class ChangePasswordModel : ValidatableObject
     {
         [Required]
         [DataType(DataType.Password)]
@@ -20,5 +25,12 @@ namespace TemplateProject.Web.Mvc.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public int MinRequiredPasswordLength { get; set; }
+
+        protected override IEnumerable<PropertyInfo> GetTypeSpecificSignatureProperties()
+        {
+            return GetType().GetProperties().Where((p => Attribute.IsDefined(p, typeof(DomainSignatureAttribute), true)));
+        }
     }
 }

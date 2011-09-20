@@ -76,6 +76,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +92,9 @@
     <Compile Include="CommandHandlers\MassCategoryChangeHandler.cs" />
     <Compile Include="Commands\MassCategoryChangeCommand.cs" />
     <Compile Include="Commands\MassCategoryChangeResult.cs" />
+    <Compile Include="CustomContracts\IAuthenticationTasks.cs" />
+    <Compile Include="CustomContracts\ICaptchaTasks.cs" />
+    <Compile Include="CustomContracts\IMembershipTasks.cs" />
     <Compile Include="ProductTasks.cs" />
   </ItemGroup>
   <ItemGroup>
