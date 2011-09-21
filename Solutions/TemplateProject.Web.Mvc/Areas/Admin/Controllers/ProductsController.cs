@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using Microsoft.Web.Helpers;
+using System.Web.UI;
+using MvpRestApiLib;
 using SharpArch.Domain.Commands;
 using SharpArch.NHibernate.Web.Mvc;
 using TemplateProject.Domain;
@@ -36,12 +37,17 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             _captchaTasks = captchaTasks;
         }
 
+        [EnableJson, EnableXml]
+        [HttpGet, OutputCache(NoStore = true, Location = OutputCacheLocation.None)]
         public ActionResult Index(int? page)
         {
-            var categories = _categoryTasks.GetAll();
-            ViewBag.Categories = categories.ToDictionary(k => k.Id, v => v.Name);
-            var products = _productsQuery.GetPagedList(page ?? 1, DefaultPageSize);
-            return View(products);
+            //TODO Mitch Figure out better paging architecture to allow for json and xml serialization as well as html views
+//            var categories = _categoryTasks.GetAll();
+//            ViewBag.Categories = categories.ToDictionary(k => k.Id, v => v.Name);
+//            var products = _productsQuery.GetPagedList(page ?? 1, DefaultPageSize);
+//            if(products.Count() == 1)
+            return View(new ProductsViewModel { Products = _productTasks.GetAll() });
+//            return View(products.ToList());
         }
 
         public ActionResult Create()
@@ -71,9 +77,10 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
             return View(model);
         }
 
+        [EnableJson, EnableXml]
         [Transaction]
         [ValidateAntiForgeryToken]
-        [HttpPost]
+        [HttpPost, HttpPut]
         public ActionResult Edit(Product product)
         {
             if (_captchaTasks.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"]))
@@ -100,6 +107,8 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Transaction]
+        [EnableJson, EnableXml]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
             _productTasks.Delete(id);

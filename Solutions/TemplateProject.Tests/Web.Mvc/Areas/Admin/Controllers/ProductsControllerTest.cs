@@ -137,7 +137,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
-            var result = _controller.Edit(new Product {Category = new Category()}) as ViewResult;
+            var result = _controller.Edit(new Product { Category = new Category() }) as ViewResult;
 
             //Assert
             Assert.AreEqual("Create", result.ViewName);

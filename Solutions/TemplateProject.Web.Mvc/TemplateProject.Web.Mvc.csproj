@@ -103,6 +103,9 @@
     <Reference Include="Quartz">
       <HintPath>..\..\Packages\Quartz.1.0.3\lib\3.5\Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="RouteDebugger">
+      <HintPath>..\..\Packages\routedebugger.2.0.0.7\lib\net40\RouteDebugger.dll</HintPath>
+    </Reference>
     <Reference Include="SharpArch.Domain">
       <HintPath>..\..\ReferencedAssemblies\SharpArchitecture\SharpArch.Domain.dll</HintPath>
     </Reference>
@@ -118,6 +121,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -165,6 +169,7 @@
     <Compile Include="Areas\Admin\Controllers\CategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Models\ProductEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ProductsViewModel.cs" />
     <Compile Include="Attributes\AllowAnonymousAttribute.cs" />
     <Compile Include="Attributes\HandleErrorAttribute.cs" />
     <Compile Include="Attributes\LogonAuthorize.cs" />
@@ -186,11 +191,13 @@
     <Compile Include="Models\LogOnModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Wrappers\ReCaptchaWrapper.cs" />
+    <Compile Include="XmlValueProviderFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\flash\htf.swf" />
     <Content Include="Content\img\sharp_arch.jpg" />
     <Content Include="Content\img\sharp_arch_small.gif" />
+    <Content Include="Content\img\tracks.png" />
     <Content Include="Content\js\formUtilities.js" />
     <Content Include="Content\js\jquery-1.6.1.min.js" />
     <Content Include="Content\js\modernizr-1.7.min.js" />
@@ -209,6 +216,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MvpRestApiLib\MvpRestApiLib.csproj">
+      <Project>{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}</Project>
+      <Name>MvpRestApiLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">
       <Project>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</Project>
       <Name>TemplateProject.Domain</Name>

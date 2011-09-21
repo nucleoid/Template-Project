@@ -68,6 +68,8 @@ namespace TemplateProject.Web.Mvc
             ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             AreaRegistration.RegisterAllAreas();
             RouteRegistrar.RegisterRoutesTo(RouteTable.Routes);
+            ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+            ValueProviderFactories.Factories.Add(new TemplateProject.Web.Mvc.XmlValueProviderFactory());
             RegisterGlobalFilters(GlobalFilters.Filters);
             LogManager.Configuration = NLogConfiguration.CreateConfig();
         }

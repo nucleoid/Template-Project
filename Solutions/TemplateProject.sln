@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.Web.Mvc", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateProject.Tests", "TemplateProject.Tests\TemplateProject.Tests.csproj", "{CC4A233E-BE8A-47CC-A87C-8352BFD557B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvpRestApiLib", "MvpRestApiLib\MvpRestApiLib.csproj", "{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CodeCoverage|Any CPU = CodeCoverage|Any CPU
@@ -69,6 +71,14 @@ Global
 		{CC4A233E-BE8A-47CC-A87C-8352BFD557B7}.FxCop|Any CPU.Build.0 = Release|Any CPU
 		{CC4A233E-BE8A-47CC-A87C-8352BFD557B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC4A233E-BE8A-47CC-A87C-8352BFD557B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.CodeCoverage|Any CPU.ActiveCfg = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.CodeCoverage|Any CPU.Build.0 = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.FxCop|Any CPU.ActiveCfg = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.FxCop|Any CPU.Build.0 = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
