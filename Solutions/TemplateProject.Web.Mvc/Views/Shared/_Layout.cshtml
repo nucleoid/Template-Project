@@ -29,7 +29,7 @@
                     <h2>TemplateProject Pages</h2>
                     <ul>
                         <li>@(Html.ActionLinkArea<HomeController>(c => c.Index(), "Home", null))</li>
-                        <li>@(Html.ActionLinkArea<CategoriesController>(c => c.Index(), "Admin Categories", "Admin"))</li>
+                        <li>@(Html.ActionLinkArea<CategoriesController>(c => c.Index(null), "Admin Categories", "Admin"))</li>
                         <li>@(Html.ActionLinkArea<ProductsController>(c => c.Index(null), "Admin Products", "Admin"))</li>
                     </ul>
                 </div>

@@ -1,6 +1,6 @@
-﻿@using MvcContrib.Pagination
-@using MvcContrib.UI.Grid
-@model IPagination<Product>
+﻿@using MvcContrib.UI.Grid
+@using TemplateProject.Web.Mvc.Areas.Admin.Models
+@model ProductsViewModel
 
 @{
     ViewBag.Title = "Products";
@@ -15,7 +15,7 @@
 @using (Html.BeginForm("ChangeCategory", "Products"))
 {
     <text>
-    @Html.Grid(Model).Columns(column =>
+    @Html.Grid(Model.Products).Columns(column =>
     {
         column.For(p => p.Id).Named("ID");
         column.For(p => p.Name);
@@ -26,10 +26,10 @@
         column.For(p => Html.CheckBox(p.Id.ToString(), false));
     }).Empty("No Products")
 
- @if (Model.TotalItems > 0)
+ @if (Model.Products.TotalItems > 0)
  {
      @Html.Label("category", "Category")
-     <div>@Html.DropDownList("category", new SelectList(ViewBag.Categories, "Key", "Value"))
+     <div>@Html.DropDownList("category", new SelectList(Model.Categories, "Key", "Value"))
          <input type="submit" value = "Change Category for Selected Products" /></div>
      <div id="change-category-success"></div>
  }
@@ -37,19 +37,19 @@
 }
 </div>
 <div>
-@if (Model.HasPreviousPage)
+@if (Model.Products.HasPreviousPage)
 {
-    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.PageNumber - 1), "Previous"))</text>
+    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.Products.PageNumber - 1), "Previous"))</text>
 }
 
-@if (Model.HasNextPage)
+@if (Model.Products.HasNextPage)
 {
-    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.PageNumber + 1), "Next"))</text>
+    <text>@(Html.ActionLink<ProductsController>(c => c.Index(Model.Products.PageNumber + 1), "Next"))</text>
 }
 </div>
 
 <div>
-Page @Model.PageNumber of @Model.TotalPages
+Page @Model.Products.PageNumber of @Model.Products.TotalPages
 </div>
 
 <script type="text/javascript">

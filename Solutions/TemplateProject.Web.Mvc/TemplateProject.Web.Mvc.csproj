@@ -168,6 +168,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoriesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
+    <Compile Include="Areas\Admin\Models\CategoriesViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductsViewModel.cs" />
     <Compile Include="Attributes\AllowAnonymousAttribute.cs" />
@@ -191,7 +192,6 @@
     <Compile Include="Models\LogOnModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Wrappers\ReCaptchaWrapper.cs" />
-    <Compile Include="XmlValueProviderFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\flash\htf.swf" />
@@ -216,9 +216,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvpRestApiLib\MvpRestApiLib.csproj">
+    <ProjectReference Include="..\MvpRestApiLib\MvcRestApiLib.csproj">
       <Project>{FB23CC9C-805D-45CD-A7CB-401CC8B1911D}</Project>
-      <Name>MvpRestApiLib</Name>
+      <Name>MvcRestApiLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\TemplateProject.Domain\TemplateProject.Domain.csproj">
       <Project>{8DEF56CD-601E-443C-9DCE-C4EC54C0B6A6}</Project>

@@ -18,35 +18,35 @@ namespace TemplateProject.Web.Mvc.Areas.Admin
             context.MapRoute(
                 "get-object",
                 "Admin/{controller}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new { action = "Index", id = UrlParameter.Optional },
                 new { httpMethod = new HttpMethodConstraint("GET"), }
             );
 
             context.MapRoute(
                 "post-object",
                 "Admin/{controller}",
-                new { controller = "Home", action = "Edit" },
+                new { action = "Save" },
                 new { httpMethod = new HttpMethodConstraint("POST") }
             );
 
             context.MapRoute(
                 "put-object",
                 "Admin/{controller}/{id}",
-                new { controller = "Home", action = "Edit" },
+                new { action = "Save" },
                 new { httpMethod = new HttpMethodConstraint("PUT") }
             );
 
             context.MapRoute(
                 "delete-object",
                 "Admin/{controller}/{id}",
-                new { controller = "Home", action = "Delete" },
+                new { action = "Delete" },
                 new { httpMethod = new HttpMethodConstraint("DELETE") }
             );
 
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

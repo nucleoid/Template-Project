@@ -1,31 +1,25 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Web.Mvc;
 
 namespace MvpRestApiLib
 {
-    public class EnableJsonAttribute : ActionFilterAttribute
+    public class EnableJsonAttribute : EnableRestAttribute
     {
-        private readonly static string[] _jsonTypes = new [] { "application/json", "text/json" };
-        
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        private readonly static string[] JsonTypes = new [] { "application/json", "text/json" };
+
+        protected override string[] AcceptedTypes
         {
-            if (typeof(RedirectToRouteResult).IsInstanceOfType(filterContext.Result))
-                return;
+            get { return JsonTypes; }
+        }
 
-            var acceptTypes = filterContext.HttpContext.Request.AcceptTypes ?? new[] { "text/html" };
-
-            var model = filterContext.Controller.ViewData.Model;
-
-            var contentEncoding = filterContext.HttpContext.Request.ContentEncoding ?? Encoding.UTF8;
-
-            if (_jsonTypes.Any(type => acceptTypes.Contains(type)))
-                filterContext.Result = new JsonResult2
-                { 
-                    Data = model, 
-                    ContentEncoding = contentEncoding,
-                    ContentType = filterContext.HttpContext.Request.ContentType
-                };            
+        protected override ActionResult Result(ActionExecutedContext filterContext, object model, Encoding contentEncoding)
+        {
+            return new JsonResult2
+            {
+                Data = model,
+                ContentEncoding = contentEncoding,
+                ContentType = filterContext.HttpContext.Request.ContentType
+            }; 
         }
     }
 }

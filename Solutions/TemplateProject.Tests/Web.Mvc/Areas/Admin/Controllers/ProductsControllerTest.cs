@@ -53,10 +53,10 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
 
             //Assert
             Assert.AreEqual(string.Empty, result.ViewName);
-            Assert.IsInstanceOfType<CustomPagination<Product>>(result.Model);
-            Assert.AreEqual(1, (result.Model as CustomPagination<Product>).PageNumber);
-            Assert.AreEqual(1, (result.Model as CustomPagination<Product>).TotalItems);
-            Assert.AreEqual(1, (result.ViewBag.Categories as Dictionary<int, string>).Count);
+            Assert.IsInstanceOfType<ProductsViewModel>(result.Model);
+            Assert.AreEqual(1, (result.Model as ProductsViewModel).Products.PageNumber);
+            Assert.AreEqual(1, (result.Model as ProductsViewModel).Products.TotalItems);
+            Assert.AreEqual(1, (result.Model as ProductsViewModel).Categories.Count);
             _productsQuery.VerifyAllExpectations();
             _categoryTasks.VerifyAllExpectations();
         }
@@ -73,10 +73,10 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
 
             //Assert
             Assert.AreEqual(string.Empty, result.ViewName);
-            Assert.IsInstanceOfType<CustomPagination<Product>>(result.Model);
-            Assert.AreEqual(2, (result.Model as CustomPagination<Product>).PageNumber);
-            Assert.AreEqual(1, (result.Model as CustomPagination<Product>).TotalItems);
-            Assert.AreEqual(1, (result.ViewBag.Categories as Dictionary<int, string>).Count);
+            Assert.IsInstanceOfType<ProductsViewModel>(result.Model);
+            Assert.AreEqual(2, (result.Model as ProductsViewModel).Products.PageNumber);
+            Assert.AreEqual(1, (result.Model as ProductsViewModel).Products.TotalItems);
+            Assert.AreEqual(1, (result.Model as ProductsViewModel).Categories.Count);
             _productsQuery.VerifyAllExpectations();
             _categoryTasks.VerifyAllExpectations();
         }
@@ -99,8 +99,8 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _categoryTasks.VerifyAllExpectations();
         }
 
-        [Test]
-        public void Edit_Validates_Bad_Captcha_And_Forwards()
+        [Test, Ignore("Removed ReCaptcha check for REST requests")]
+        public void Save_Validates_Bad_Captcha_And_Forwards()
         {
             //Arrange
             var routeData = new RouteData();
@@ -114,7 +114,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(false);
 
             //Act
-            var result = _controller.Edit(new Product { Category = new Category() }) as ViewResult;
+            var result = _controller.Save(new Product { Category = new Category() }) as ViewResult;
 
             //Assert
             Assert.AreEqual("ReCaptcha failed!", result.ViewData.ModelState["ReCaptcha"].Errors[0].ErrorMessage);
@@ -123,7 +123,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Bad_Model_And_Forwards_To_Create()
+        public void Save_Validates_Bad_Model_And_Forwards_To_Create()
         {
             //Arrange
             var routeData = new RouteData();
@@ -134,10 +134,10 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> {new Category()});
             var request = new SimulatedHttpRequest("/", string.Empty, string.Empty, string.Empty, null, "localhost");
             HttpContext.Current = new HttpContext(request);
-            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
+//            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
-            var result = _controller.Edit(new Product { Category = new Category() }) as ViewResult;
+            var result = _controller.Save(new Product { Category = new Category() }) as ViewResult;
 
             //Assert
             Assert.AreEqual("Create", result.ViewName);
@@ -149,7 +149,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Bad_Model_And_Forwards_To_Edit()
+        public void Save_Validates_Bad_Model_And_Forwards_To_Edit()
         {
             //Arrange
             var routeData = new RouteData();
@@ -160,13 +160,13 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             var product = new Product {Category = new Category()};
             product.SetIdTo(2);
             _categoryTasks.Expect(x => x.GetAll()).Return(new List<Category> { new Category() });
-            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
+//            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
-            var result = _controller.Edit(product) as ViewResult;
+            var result = _controller.Save(product) as ViewResult;
 
             //Assert
-            Assert.AreEqual(string.Empty, result.ViewName);
+            Assert.AreEqual("Edit", result.ViewName);
             Assert.IsInstanceOfType<ProductEditViewModel>(result.Model);
             Assert.AreEqual(2, (result.Model as ProductEditViewModel).Product.Id);
             Assert.AreEqual(1, (result.Model as ProductEditViewModel).Categories.Count);
@@ -175,7 +175,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Good_Model_And_Redirects_To_Index()
+        public void Save_Validates_Good_Model_And_Redirects_To_Index()
         {
             //Arrange
             var routeData = new RouteData();
@@ -185,10 +185,10 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ValueProvider = new FormCollection().ToValueProvider();
             _productTasks.Expect(x => x.CreateOrUpdate(Arg<Product>.Is.Anything)).Return(new Product());
             var product = new Product {Name = "Blah", Category = new Category()};
-            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
+//            _captchaTasks.Expect(x => x.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"])).Return(true);
 
             //Act
-            var result = _controller.Edit(product) as RedirectToRouteResult;
+            var result = _controller.Save(product) as RedirectToRouteResult;
 
             //Assert
             Assert.AreEqual("Index", result.RouteValues["Action"]);

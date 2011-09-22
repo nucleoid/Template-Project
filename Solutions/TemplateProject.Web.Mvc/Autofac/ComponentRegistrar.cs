@@ -1,7 +1,9 @@
 ﻿
 using System.Reflection;
+using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using MvpRestApiLib;
 using SharpArch.Domain.Commands;
 using SharpArch.NHibernate;
 using TemplateProject.Infrastructure.NHibernateConfig;
@@ -57,6 +59,7 @@ namespace TemplateProject.Web.Mvc.Autofac
 
         private static void AddMVCObjects(ContainerBuilder builder, Assembly assembly)
         {
+            builder.RegisterType<XmlValueProviderFactory>().As<ValueProviderFactory>();
             builder.RegisterModelBinders(assembly);
             builder.RegisterModelBinderProvider();
             builder.RegisterControllers(assembly);

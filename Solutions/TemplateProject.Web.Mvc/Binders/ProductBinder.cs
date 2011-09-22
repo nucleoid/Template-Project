@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Web.Mvc;
 using SharpArch.Web.Mvc.ModelBinder;
 using TemplateProject.Domain;
@@ -10,7 +11,8 @@ namespace TemplateProject.Web.Mvc.Binders
     public class ProductBinder : SharpModelBinder
     {
         private const string CategoryIdPropertyName = "SelectedCategoryId";
-        private const string FullCategoryIdPropertyName = "Product.Category";
+        private const string CategoryPropertyName = "Category";
+        private const string FullCategoryPropertyName = "Product.Category";
         private readonly ICategoryTasks _categoryTasks;
 
         public ProductBinder(ICategoryTasks categoryTasks)
@@ -33,8 +35,9 @@ namespace TemplateProject.Web.Mvc.Binders
             if (id != null && Int32.TryParse(id.AttemptedValue, out parsedId))
             {
                 model.Category = _categoryTasks.Get(parsedId);
-                bindingContext.ModelState[FullCategoryIdPropertyName] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, 
-                    CultureInfo.CurrentCulture)};
+                var key = bindingContext.ModelState.Keys.FirstOrDefault(x => x.Contains(CategoryPropertyName));
+                if(key != null)
+                    bindingContext.ModelState[key] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, CultureInfo.CurrentCulture)};
             }
         }
     }

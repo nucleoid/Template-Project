@@ -28,7 +28,7 @@ namespace TemplateProject.Domain
         [Required(ErrorMessage = "Must have a category")]
         public virtual Category Category
         {
-            get { return _category.Self; }
+            get { return _category != null ? _category.Self : null; }
             set { _category = value; }
         }
 

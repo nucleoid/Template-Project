@@ -8,6 +8,7 @@ using SharpArch.Domain.PersistenceSupport;
 using SharpArch.NHibernate;
 using SharpArch.NHibernate.Contracts.Repositories;
 using TemplateProject.Domain;
+using TemplateProject.Domain.Contracts.Queries;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
@@ -57,6 +58,7 @@ namespace TemplateProject.Tests.Web.Mvc.Autofac
         public void AddComponentsTo_Adds_Query_Objects()
         {
             Assert.IsTrue(_container.IsRegistered(typeof(IProductsQuery)));
+            Assert.IsTrue(_container.IsRegistered(typeof(ICategoriesQuery)));
         }
 
         [Test]
@@ -82,6 +84,7 @@ namespace TemplateProject.Tests.Web.Mvc.Autofac
             Assert.IsTrue(_container.IsRegistered<IModelBinderProvider>());
             Assert.IsTrue(_container.IsRegistered<HomeController>());
             Assert.IsTrue(_container.IsRegistered<HttpContextBase>());
+            Assert.IsTrue(_container.IsRegistered<ValueProviderFactory>());
         }
     }
 }

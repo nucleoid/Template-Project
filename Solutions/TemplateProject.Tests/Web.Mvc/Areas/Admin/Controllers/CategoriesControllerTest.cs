@@ -3,11 +3,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MbUnit.Framework;
+using MvcContrib.Pagination;
 using Rhino.Mocks;
 using SharpArch.Testing;
 using TemplateProject.Domain;
+using TemplateProject.Domain.Contracts.Queries;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Web.Mvc.Areas.Admin.Controllers;
+using TemplateProject.Web.Mvc.Areas.Admin.Models;
 
 namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
 {
@@ -15,28 +18,50 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
     public class CategoriesControllerTest
     {
         private ICategoryTasks _tasks;
+        private ICategoriesQuery _categoriesQuery;
         private CategoriesController _controller;
 
         [SetUp]
         public void Setup()
         {
             _tasks = MockRepository.GenerateMock<ICategoryTasks>();
-            _controller = new CategoriesController(_tasks);
+            _categoriesQuery = MockRepository.GenerateMock<ICategoriesQuery>();
+            _controller = new CategoriesController(_tasks, _categoriesQuery);
         }
 
         [Test]
-        public void Index_Forwards_To_Index_With_Categories()
+        public void Index_Forwards_To_Index_Without_Page()
         {
             //Arrange
-            _tasks.Expect(x => x.GetAll()).Return(new List<Category> { new Category() });
+            _categoriesQuery.Expect(x => x.GetPagedList(1, 10)).Return(new CustomPagination<Category>(new List<Category> { new Category() }, 1, 10, 1));
 
             //Act
-            var result = _controller.Index() as ViewResult;
+            var result = _controller.Index(null) as ViewResult;
 
             //Assert
             Assert.AreEqual(string.Empty, result.ViewName);
-            Assert.IsInstanceOfType<IList<Category>>(result.Model);
-            Assert.AreEqual(1, (result.Model as IList<Category>).Count);
+            Assert.IsInstanceOfType<CategoriesViewModel>(result.Model);
+            Assert.AreEqual(1, (result.Model as CategoriesViewModel).Categories.PageNumber);
+            Assert.AreEqual(1, (result.Model as CategoriesViewModel).Categories.TotalItems);
+            _tasks.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Index_Forwards_To_Index_With_Page()
+        {
+            //Arrange
+            _categoriesQuery.Expect(x => x.GetPagedList(2, 10)).Return(new CustomPagination<Category>(new List<Category> { new Category() }, 2, 10, 1));
+
+            //Act
+            var result = _controller.Index(2) as ViewResult;
+
+            //Assert
+            //Assert
+            Assert.AreEqual(string.Empty, result.ViewName);
+            Assert.IsInstanceOfType<CategoriesViewModel>(result.Model);
+            Assert.AreEqual(2, (result.Model as CategoriesViewModel).Categories.PageNumber);
+            Assert.AreEqual(1, (result.Model as CategoriesViewModel).Categories.TotalItems);
+            _categoriesQuery.VerifyAllExpectations();
         }
 
         [Test]
@@ -52,7 +77,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Bad_Model_And_Forwards_To_Create()
+        public void Save_Validates_Bad_Model_And_Forwards_To_Create()
         {
             //Arrange
             var routeData = new RouteData();
@@ -62,7 +87,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _controller.ValueProvider = new FormCollection().ToValueProvider();
 
             //Act
-            var result = _controller.Edit(new Category()) as ViewResult;
+            var result = _controller.Save(new Category()) as ViewResult;
 
             //Assert
             Assert.AreEqual("Create", result.ViewName);
@@ -71,7 +96,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Bad_Model_And_Forwards_To_Edit()
+        public void Save_Validates_Bad_Model_And_Forwards_To_Edit()
         {
             //Arrange
             var routeData = new RouteData();
@@ -83,7 +108,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             category.SetIdTo(2);
 
             //Act
-            var result = _controller.Edit(category) as ViewResult;
+            var result = _controller.Save(category) as ViewResult;
 
             //Assert
             Assert.AreEqual(string.Empty, result.ViewName);
@@ -92,7 +117,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Test]
-        public void Edit_Validates_Good_Model_And_Redirects_To_Index()
+        public void Save_Validates_Good_Model_And_Redirects_To_Index()
         {
             //Arrange
             var routeData = new RouteData();
@@ -103,7 +128,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin.Controllers
             _tasks.Expect(x => x.CreateOrUpdate(Arg<Category>.Is.Anything)).Return(new Category());
 
             //Act
-            var result = _controller.Edit(new Category { Name = "blah" }) as RedirectToRouteResult;
+            var result = _controller.Save(new Category { Name = "blah" }) as RedirectToRouteResult;
 
             //Assert
             Assert.AreEqual("Index", result.RouteValues["Action"]);

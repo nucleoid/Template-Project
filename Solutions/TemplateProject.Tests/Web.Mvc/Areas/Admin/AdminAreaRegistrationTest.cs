@@ -51,7 +51,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin
 
             //Assert
             Assert.AreEqual("Products", data["controller"]);
-            Assert.AreEqual("Edit", data["action"]);
+            Assert.AreEqual("Save", data["action"]);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin
 
             //Assert
             Assert.AreEqual("Products", data["controller"]);
-            Assert.AreEqual("Edit", data["action"]);
+            Assert.AreEqual("Save", data["action"]);
             Assert.AreEqual("5", data["id"]);
         }
 

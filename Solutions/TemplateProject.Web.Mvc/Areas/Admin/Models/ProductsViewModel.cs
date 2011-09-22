@@ -1,14 +1,19 @@
-﻿
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MvcContrib.Pagination;
+using MvpRestApiLib;
 using TemplateProject.Domain;
 
 namespace TemplateProject.Web.Mvc.Areas.Admin.Models
 {
-    [DataContract]
-    public class ProductsViewModel
+    public class ProductsViewModel : IRestModel
     {
-        [DataMember]
-        public IList<Product> Products { get; set; }
+        public IPagination<Product> Products { get; set; }
+        public Dictionary<int, string> Categories { get; set; }
+
+        public object RestModel
+        {
+            get { return Products.ToList(); }
+        }
     }
 }

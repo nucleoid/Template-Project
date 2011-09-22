@@ -165,5 +165,34 @@ namespace TemplateProject.Tests.Web.Mvc
             // Assert
             Assert.AreEqual(FlaggedAvailability.Online | FlaggedAvailability.Store | FlaggedAvailability.ThirdParty, result.MultipleAvailability);
         }
+
+        [Test]
+        public void BindModel_With_JSON_Values()
+        {
+            // Arrange
+            var formCollection = new NameValueCollection { { "Name", "Sploosh" }, { "SelectedCategoryId", "2" } };
+
+            var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
+            var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
+
+            var bindingContext = new ModelBindingContext
+            {
+                ModelName = string.Empty,
+                ValueProvider = valueProvider,
+                ModelMetadata = modelMetadata
+            };
+
+            var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
+            var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
+            _categoryTasks.Expect(x => x.Get(2)).Return(new Category { Name = "Bones" });
+
+            // Act
+            var result = _binder.BindModel(controllerContext, bindingContext) as Product;
+
+            // Assert
+            Assert.AreEqual("Bones", result.Category.Name);
+            Assert.IsTrue(bindingContext.ModelState.IsValid);
+            _categoryTasks.VerifyAllExpectations();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using MvcContrib.UI.Grid
-@model IList<Category>
+@using TemplateProject.Web.Mvc.Areas.Admin.Models
+@model CategoriesViewModel
 
 @{
     ViewBag.Title = "Categories";
@@ -8,7 +9,7 @@
 
 <h2>Categories</h2>
 
-@Html.Grid(Model).Columns(column =>
+@Html.Grid(Model.Categories).Columns(column =>
 {
     column.For(c => c.Id).Named("ID");
     column.For(c => c.Name);

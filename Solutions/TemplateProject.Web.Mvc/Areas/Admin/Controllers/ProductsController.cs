@@ -41,13 +41,9 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
         [HttpGet, OutputCache(NoStore = true, Location = OutputCacheLocation.None)]
         public ActionResult Index(int? page)
         {
-            //TODO Mitch Figure out better paging architecture to allow for json and xml serialization as well as html views
-//            var categories = _categoryTasks.GetAll();
-//            ViewBag.Categories = categories.ToDictionary(k => k.Id, v => v.Name);
-//            var products = _productsQuery.GetPagedList(page ?? 1, DefaultPageSize);
-//            if(products.Count() == 1)
-            return View(new ProductsViewModel { Products = _productTasks.GetAll() });
-//            return View(products.ToList());
+            var categories = _categoryTasks.GetAll().ToDictionary(k => k.Id, v => v.Name);
+            var products = _productsQuery.GetPagedList(page ?? 1, DefaultPageSize);
+            return View(new ProductsViewModel { Products = products, Categories = categories});
         }
 
         public ActionResult Create()
@@ -79,20 +75,20 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
 
         [EnableJson, EnableXml]
         [Transaction]
-        [ValidateAntiForgeryToken]
-        [HttpPost, HttpPut]
-        public ActionResult Edit(Product product)
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Put)]
+        public ActionResult Save(Product product)
         {
-            if (_captchaTasks.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"]))
-            {
+            //Uncomment to test out ReCaptcha, currently disabled for REST testing
+//            if (_captchaTasks.Validate(ConfigurationManager.AppSettings["ReCaptchaPrivate"]))
+//            {
                 if (ModelState.IsValid && product.IsValid())
                 {
                     _productTasks.CreateOrUpdate(product);
                     return this.RedirectToAction(x => x.Index(null));
                 }
-            }
-            else
-                ModelState.AddModelError("ReCaptcha", "ReCaptcha failed!");
+//            }
+//            else
+//                ModelState.AddModelError("ReCaptcha", "ReCaptcha failed!");
 
             var model = new ProductEditViewModel
             {
@@ -103,12 +99,12 @@ namespace TemplateProject.Web.Mvc.Areas.Admin.Controllers
 
             if (product.Id == 0)
                 return View("Create", model);
-            return View(model);
+            return View("Edit", model);
         }
 
         [Transaction]
         [EnableJson, EnableXml]
-        [HttpDelete]
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Delete)]
         public ActionResult Delete(int id)
         {
             _productTasks.Delete(id);
