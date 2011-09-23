@@ -34,7 +34,6 @@
   <ItemGroup>
     <Compile Include="EnableRestAttribute.cs" />
     <Compile Include="EnableXmlAttribute.cs" />
-    <Compile Include="HttpStatusCodeResult.cs" />
     <Compile Include="IRestModel.cs" />
     <Compile Include="JsonResult2.cs" />
     <Compile Include="EnableJsonAttribute.cs" />
