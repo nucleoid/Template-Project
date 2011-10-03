@@ -60,6 +60,7 @@
     <Compile Include="TestController.cs" />
     <Compile Include="TestSerial.cs" />
     <Compile Include="XmlResultTest.cs" />
+    <Compile Include="XmlValueProviderFactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvpRestApiLib\MvcRestApiLib.csproj">

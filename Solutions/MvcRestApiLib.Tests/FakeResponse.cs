@@ -18,9 +18,11 @@ namespace MvcRestApiLib.Tests
             }
         }
 
+        public string TestString { get; set; }
+
         public override void Write(string s)
         {
-            new StreamWriter(_stream).Write(s);
+            TestString = s;
         }
     }
 }

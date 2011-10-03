@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,7 +11,7 @@ namespace MvpRestApiLib
     // Ref: http://www.nogginbox.co.uk/blog/xml-to-asp.net-mvc-action-method
     public class XmlValueProviderFactory : ValueProviderFactory
     {
-        private static void AddToBackingStore(Dictionary<string, object> backingStore, string prefix, XElement xmlDoc)
+        internal static void AddToBackingStore(Dictionary<string, object> backingStore, string prefix, XElement xmlDoc)
         {
             // Check the keys to see if this is an array or an object
             var uniqueKeys = new List<String>();
@@ -28,13 +27,9 @@ namespace MvpRestApiLib
 
             bool isArray;
             if (uniqueKeys.Count == 1)
-            {
                 isArray = true;
-            }
             else if (uniqueKeys.Count == totalCount)
-            {
                 isArray = false;
-            }
             else
             {
                 // Not sure how to deal with a XML doc that has some keys the same, but not all
@@ -67,7 +62,7 @@ namespace MvpRestApiLib
             }
         }
 
-        private static XDocument GetDeserializedXml(ControllerContext controllerContext)
+        internal static XDocument GetDeserializedXml(ControllerContext controllerContext)
         {
             var contentType = controllerContext.HttpContext.Request.ContentType;
             if (!contentType.StartsWith("text/xml", StringComparison.OrdinalIgnoreCase)
@@ -86,7 +81,7 @@ namespace MvpRestApiLib
                 var xmlReader = new XmlTextReader(controllerContext.HttpContext.Request.InputStream);
                 xml = XDocument.Load(xmlReader);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
@@ -105,9 +100,7 @@ namespace MvpRestApiLib
         {
             XDocument xmlData = GetDeserializedXml(controllerContext);
             if (xmlData == null)
-            {
                 return null;
-            }
 
             var backingStore = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             AddToBackingStore(backingStore, String.Empty, xmlData.Root);

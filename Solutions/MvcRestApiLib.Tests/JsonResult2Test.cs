@@ -90,7 +90,7 @@ namespace MvcRestApiLib.Tests
             var httpContext = MockRepository.GenerateMock<HttpContextBase>();
             httpContext.Expect(x => x.Response).Return(httpResponse);
             var context = new ControllerContext(httpContext, new RouteData(), new TestController());
-            var result = new JsonResult2 { Data = new TestSerial {Number = 54} };
+            var result = new JsonResult2(new TestSerial {Number = 54});
 
             //Act
             result.ExecuteResult(context);
