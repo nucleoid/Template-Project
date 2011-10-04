@@ -8,7 +8,7 @@ namespace MvpRestApiLib
 {
     public abstract class EnableRestAttribute : ActionFilterAttribute
     {
-        protected abstract string[] AcceptedTypes { get; }
+        public abstract string[] AcceptedTypes { get; }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {

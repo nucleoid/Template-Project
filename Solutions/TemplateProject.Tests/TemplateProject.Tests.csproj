@@ -140,6 +140,8 @@
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\CategoriesControllerTest.cs" />
     <Compile Include="Web.Mvc\Areas\Admin\Controllers\ProductsControllerTest.cs" />
     <Compile Include="Domain\Validation\Attributes\NameValidationAttributeTest.cs" />
+    <Compile Include="Web.Mvc\Attributes\BasicAuthorizeAttributeTest.cs" />
+    <Compile Include="Web.Mvc\Attributes\LogonAuthorizeAttributeTest.cs" />
     <Compile Include="Web.Mvc\Autofac\ComponentRegistrarTest.cs" />
     <Compile Include="Web.Mvc\Controllers\AccountControllerTest.cs" />
     <Compile Include="Web.Mvc\Controllers\ErrorControllerTest.cs" />
@@ -148,7 +150,9 @@
     <Compile Include="Web.Mvc\Extensions\HtmlHelperExtensionsTest.cs" />
     <Compile Include="Web.Mvc\Extensions\IntegerExtensionsTest.cs" />
     <Compile Include="Web.Mvc\Binders\ProductBinderTest.cs" />
+    <Compile Include="Web.Mvc\Extensions\RequestBaseExtensionsTest.cs" />
     <Compile Include="Web.Mvc\MvcHelper.cs" />
+    <Compile Include="Web.Mvc\Results\HttpBasicUnauthorizedResultTest.cs" />
     <Compile Include="Web.Mvc\SimulatedHttpRequest.cs" />
   </ItemGroup>
   <ItemGroup>

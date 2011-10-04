@@ -43,7 +43,7 @@ namespace TemplateProject.Web.Mvc
 
         protected void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new LogonAuthorize());
+            filters.Add(new LogonAuthorizeAttribute());
             filters.Add(new HandleErrorsAttribute());
         }
 

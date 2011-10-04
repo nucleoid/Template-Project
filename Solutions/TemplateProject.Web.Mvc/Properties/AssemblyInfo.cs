@@ -9,3 +9,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 
 [assembly: InternalsVisibleTo("TemplateProject.Tests")]
+[assembly: InternalsVisibleTo("TemplateProject.Tests.Web.Mvc.Attributes")]

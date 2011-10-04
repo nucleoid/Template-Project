@@ -7,7 +7,10 @@ namespace MvpRestApiLib
     {
         private readonly static string[] XmlTypes = new [] { "application/xml", "text/xml" };
 
-        protected override string[] AcceptedTypes { get { return XmlTypes; } }
+        public override string[] AcceptedTypes
+        {
+            get { return XmlTypes; }
+        }
 
         protected override ActionResult Result(ActionExecutedContext filterContext, object model, Encoding contentEncoding)
         {

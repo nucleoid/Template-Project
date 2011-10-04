@@ -11,7 +11,6 @@ using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Queries;
 using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Infrastructure.Queries;
-using TemplateProject.Tasks;
 using TemplateProject.Tasks.Commands;
 using TemplateProject.Tasks.CustomContracts;
 using TemplateProject.Web.Mvc.Autofac;

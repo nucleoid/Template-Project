@@ -11,6 +11,7 @@ using TemplateProject.Infrastructure.Queries;
 using TemplateProject.Tasks;
 using TemplateProject.Tasks.CommandHandlers;
 using TemplateProject.Tasks.CustomContracts;
+using TemplateProject.Web.Mvc.Attributes;
 using TemplateProject.Web.Mvc.Wrappers;
 
 namespace TemplateProject.Web.Mvc.Autofac

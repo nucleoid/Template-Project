@@ -7,7 +7,7 @@ namespace MvpRestApiLib
     {
         private readonly static string[] JsonTypes = new [] { "application/json", "text/json" };
 
-        protected override string[] AcceptedTypes
+        public override string[] AcceptedTypes
         {
             get { return JsonTypes; }
         }

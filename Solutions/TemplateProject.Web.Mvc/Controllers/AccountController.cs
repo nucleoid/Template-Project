@@ -38,7 +38,7 @@ namespace TemplateProject.Web.Mvc.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return RedirectToAction("Get", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError(string.Empty, "The user name or password provided is incorrect.");
             }
@@ -50,7 +50,7 @@ namespace TemplateProject.Web.Mvc.Controllers
         {
             _authTasks.SignOut();
 
-            return RedirectToAction("Get", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
@@ -71,7 +71,7 @@ namespace TemplateProject.Web.Mvc.Controllers
                 if (createStatus == MembershipCreateStatus.Success)
                 {
                     _authTasks.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Get", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError(string.Empty, ErrorCodeToString(createStatus));
             }

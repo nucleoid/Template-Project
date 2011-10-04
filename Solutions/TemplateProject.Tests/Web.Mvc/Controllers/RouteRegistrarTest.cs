@@ -2,7 +2,6 @@
 using System.Web.Routing;
 using MbUnit.Framework;
 using MvcContrib.TestHelper;
-using TemplateProject.Web.Mvc.Areas.Admin.Controllers;
 using TemplateProject.Web.Mvc.Controllers;
 
 namespace TemplateProject.Tests.Web.Mvc.Controllers
