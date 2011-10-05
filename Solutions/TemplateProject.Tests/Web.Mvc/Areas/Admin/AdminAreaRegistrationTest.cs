@@ -31,7 +31,7 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin
 
         [Test]
         [Row("~/Admin/Products/5", "5")]
-        [Row("~/Admin/Products/test", "test")]
+        [Row("~/Admin/Products/600", "600")]
         public void Get_Single_Routes_Routed(string route, string id)
         {
             //Act
@@ -41,6 +41,17 @@ namespace TemplateProject.Tests.Web.Mvc.Areas.Admin
             Assert.AreEqual("Products", data["controller"]);
             Assert.AreEqual("Index", data["action"]);
             Assert.AreEqual(id, data["id"]);
+        }
+
+        [Test]
+        public void Get_Single_Action_Routes_Routed()
+        {
+            //Act
+            var data = "~/Admin/Products/Create".WithMethod(HttpVerbs.Get).Values;
+
+            //Assert
+            Assert.AreEqual("Products", data["controller"]);
+            Assert.AreEqual("Create", data["action"]);
         }
 
         [Test]

@@ -27,7 +27,7 @@ namespace TemplateProject.Tests.Web.Mvc.Results
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
             var response = MockRepository.GenerateMock<HttpResponseBase>();
             response.Expect(x => x.AddHeader(Arg<string>.Is.Equal("WWW-Authenticate"), Arg<string>.Is.Equal("Basic"))).Repeat.Never();
-            response.Expect(x => x.StatusCode = 401);
+            response.Expect(x => x.StatusCode = 403);
             httpcontext.Expect(x => x.Request).Return(request);
             httpcontext.Expect(x => x.Response).Return(response);
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new TestController());
@@ -49,6 +49,7 @@ namespace TemplateProject.Tests.Web.Mvc.Results
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
             var response = MockRepository.GenerateMock<HttpResponseBase>();
             response.Expect(x => x.AddHeader(Arg<string>.Is.Equal("WWW-Authenticate"), Arg<string>.Is.Equal("Basic")));
+            response.Expect(x => x.StatusCode = 403);
             httpcontext.Expect(x => x.Request).Return(request);
             httpcontext.Expect(x => x.Response).Return(response);
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new TestController());

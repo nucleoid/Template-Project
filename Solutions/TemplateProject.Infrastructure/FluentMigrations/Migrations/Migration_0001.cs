@@ -16,13 +16,13 @@ namespace TemplateProject.Infrastructure.FluentMigrations.Migrations
                 .WithColumn("CategoryId").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Created").AsDateTime()
                 .WithColumn("Modified").AsDateTime()
-                .WithColumn("Name").AsFixedLengthString(255);
+                .WithColumn("Name").AsString(255);
 
             Create.Table("Products")
                 .WithColumn("ProductId").AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Created").AsDateTime()
                 .WithColumn("Modified").AsDateTime()
-                .WithColumn("Name").AsFixedLengthString(255)
+                .WithColumn("Name").AsString(255)
                 .WithColumn("CategoryId").AsInt32()
                 .WithColumn("DefaultAvailability").AsFixedLengthString(255)
                 .WithColumn("MultipleAvailability").AsFixedLengthString(255);

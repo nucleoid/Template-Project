@@ -19,7 +19,7 @@ namespace TemplateProject.Web.Mvc.Areas.Admin
                 "get-object",
                 "Admin/{controller}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
-                new { httpMethod = new HttpMethodConstraint("GET"), }
+                new { httpMethod = new HttpMethodConstraint("GET"), id = @"(\d)+" }
             );
 
             context.MapRoute(

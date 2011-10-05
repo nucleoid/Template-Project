@@ -4,7 +4,6 @@ using SharpArch.Domain.DomainModel;
 using TemplateProject.Domain;
 using TemplateProject.Infrastructure.NHibernateConfig;
 using TemplateProject.Infrastructure.NHibernateConfig.Conventions;
-using TemplateProject.Web.Mvc;
 
 namespace TemplateProject.Tests.Infrastructure.NHibernateConfig
 {

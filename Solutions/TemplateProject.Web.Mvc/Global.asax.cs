@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +26,7 @@ using Microsoft.Practices.ServiceLocation;
 using SharpArch.NHibernate;
 using System.Configuration;
 using TemplateProject.Infrastructure;
+using TemplateProject.Web.Mvc.Extensions;
 
 namespace TemplateProject.Web.Mvc
 {
@@ -50,6 +52,13 @@ namespace TemplateProject.Web.Mvc
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             NHibernateInitializer.Instance().InitializeNHibernateOnce(InitializeNHibernateSessions);
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            var acceptTypes = HttpContext.Current.Request.AcceptTypes ?? new[] { "text/html" };
+            if (HttpContext.Current.Response.StatusCode == 403 && RequestBaseExtensions.RestfulAcceptedTypes.Any(acceptTypes.Contains))
+                HttpContext.Current.Response.StatusCode = 401;
         }
 
         protected void Application_Error(object sender, EventArgs e) 
