@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -10,7 +9,7 @@ using TemplateProject.Domain.Contracts.Tasks;
 using TemplateProject.Web.Mvc.Areas.Admin.Controllers;
 using TemplateProject.Web.Mvc.Binders;
 
-namespace TemplateProject.Tests.Web.Mvc
+namespace TemplateProject.Tests.Web.Mvc.Binders
 {
     [TestFixture]
     public class ProductBinderTest
@@ -55,7 +54,7 @@ namespace TemplateProject.Tests.Web.Mvc
         public void BindModel_With_No_Category_ID()
         {
             // Arrange
-            var formCollection = new NameValueCollection { {"Product.Name", "Sploosh"} };
+            var formCollection = new NameValueCollection { { "Product.Name", "Sploosh" } };
 
             var valueProvider = new NameValueCollectionValueProvider(formCollection, null);
             var modelMetadata = ModelMetadataProviders.Current.GetMetadataForType(null, typeof(Product));
@@ -124,7 +123,7 @@ namespace TemplateProject.Tests.Web.Mvc
 
             var httpcontext = MockRepository.GenerateStub<HttpContextBase>();
             var controllerContext = new ControllerContext(httpcontext, new RouteData(), new ProductsController(null, null, null, null, null));
-            _categoryTasks.Expect(x => x.Get(2)).Return(new Category {Name = "Bones"});
+            _categoryTasks.Expect(x => x.Get(2)).Return(new Category { Name = "Bones" });
 
             // Act
             var result = _binder.BindModel(controllerContext, bindingContext) as Product;

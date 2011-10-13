@@ -2,17 +2,18 @@
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Autofac.Integration.Mvc;
 using SharpArch.Web.Mvc.ModelBinder;
 using TemplateProject.Domain;
 using TemplateProject.Domain.Contracts.Tasks;
 
 namespace TemplateProject.Web.Mvc.Binders
 {
+    [ModelBinderType(typeof(Product))]
     public class ProductBinder : SharpModelBinder
     {
         private const string CategoryIdPropertyName = "SelectedCategoryId";
         private const string CategoryPropertyName = "Category";
-        private const string FullCategoryPropertyName = "Product.Category";
         private readonly ICategoryTasks _categoryTasks;
 
         public ProductBinder(ICategoryTasks categoryTasks)
@@ -36,8 +37,8 @@ namespace TemplateProject.Web.Mvc.Binders
             {
                 model.Category = _categoryTasks.Get(parsedId);
                 var key = bindingContext.ModelState.Keys.FirstOrDefault(x => x.Contains(CategoryPropertyName));
-                if(key != null)
-                    bindingContext.ModelState[key] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, CultureInfo.CurrentCulture)};
+                if (key != null)
+                    bindingContext.ModelState[key] = new ModelState { Value = new ValueProviderResult(id, id.AttemptedValue, CultureInfo.CurrentCulture) };
             }
         }
     }

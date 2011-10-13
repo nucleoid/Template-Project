@@ -74,7 +74,6 @@ namespace TemplateProject.Web.Mvc
             ViewEngines.Engines.Add(new RazorViewEngine());
             ModelBinders.Binders.DefaultBinder = new SharpModelBinder();
             InitializeAutofacDependencyResolver();
-            ModelBinders.Binders.Add(typeof(Product), new ProductBinder(DependencyResolver.Current.GetService<ICategoryTasks>()));
             AreaRegistration.RegisterAllAreas();
             RouteRegistrar.RegisterRoutesTo(RouteTable.Routes);
             RegisterGlobalFilters(GlobalFilters.Filters);
